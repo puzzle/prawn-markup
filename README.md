@@ -1,8 +1,8 @@
 # Prawn::Markup
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/prawn/markup`. To experiment with that code, run `bin/console` for an interactive prompt.
+Adds simple HTML snippets into [Prawn](http://prawnpdf.org)-generated PDFs. No CSS is supported, all elements are layouted vertically with basic styling options. A major use case for this gem is to include WYSIWYG-generated HTML parts into server-generated PDF documents.
 
-TODO: Delete this and the text above, and describe your gem
+This gem does not and will never convert entire HTML + CSS pages to PDF. Use [wkhtmltopdf](https://wkhtmltopdf.org/) for that.
 
 ## Installation
 
@@ -32,7 +32,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/codez/prawn-markup. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/puzzle/prawn-markup. For pull requests, add specs, make sure all of them pass and fix all rubocop issues.
+
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +42,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Prawn::Markup project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/codez/prawn-markup/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Prawn::Markup project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/puzzle/prawn-markup/blob/master/CODE_OF_CONDUCT.md).

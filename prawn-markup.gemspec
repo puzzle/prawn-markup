@@ -9,7 +9,10 @@ Gem::Specification.new do |spec|
   spec.email         = ['zumkehr@puzzle.ch']
 
   spec.summary       = 'Parse simple HTML markup to include in Prawn PDFs'
-  spec.description   = 'Parse simple HTML markup to include in Prawn PDFs'
+  spec.description   = 'Adds simple HTML snippets into Prawn-generated PDFs. ' \
+                       'No CSS is supported, all elements are layouted vertically with ' \
+                       'basic styling options. A major use case for this gem is to include ' \
+                       'WYSIWYG-generated HTML parts into server-generated PDF documents.'
   spec.homepage      = 'https://github.com/puzzle/prawn-markup'
   spec.license       = 'MIT'
 

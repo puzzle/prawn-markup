@@ -122,7 +122,7 @@ module Prawn
           return if cells.empty?
 
           @column_widths = Array.new(cells.first.size)
-          converter = Support::SizeConverter.new(total_width)
+          converter = SizeConverter.new(total_width)
           cells.each do |row|
             row.each_with_index do |cell, col|
               @column_widths[col] ||= converter.parse(cell.width)
@@ -193,14 +193,10 @@ module Prawn
         end
 
         def build_table_options
-          Support::Hash.deep_merge(default_table_options, options[:table] || {}).tap do |opts|
-            enhance_options(opts, :cell_style, extract_text_cell_style(options[:text] || {}))
-            enhance_options(opts, :header_style, opts[:cell_style])
+          HashMerger.deep(default_table_options, options[:table] || {}).tap do |opts|
+            HashMerger.enhance(opts, :cell_style, extract_text_cell_style(options[:text] || {}))
+            HashMerger.enhance(opts, :header_style, opts[:cell_style])
           end
-        end
-
-        def enhance_options(options, key, hash)
-          options[key] = hash.merge(options[key])
         end
 
         def default_table_options

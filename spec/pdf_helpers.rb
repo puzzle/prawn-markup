@@ -41,4 +41,15 @@ RSpec.shared_context 'pdf_helpers' do
     encoded = Base64.encode64(binary)
     "data:image/#{File.extname(file)[1..-1]};,#{encoded}"
   end
+
+  def lookatit
+    require 'tempfile'
+    f = Tempfile.new(%w[spec- .pdf])
+    f.close
+    doc.render_file(f.path)
+    `xdg-open #{f.path}`
+  ensure
+    f.unlink
+  end
+
 end

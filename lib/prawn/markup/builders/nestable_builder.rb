@@ -35,7 +35,7 @@ module Prawn
         def compute_image_width(hash, max_width)
           hash.dup.tap do |image_hash|
             image_hash.delete(:width)
-            image_hash[:image_width] = Support::SizeConverter.new(max_width).parse(hash[:width])
+            image_hash[:image_width] = SizeConverter.new(max_width).parse(hash[:width])
             if max_width
               natural_width, _height = natural_image_dimensions(image_hash)
               image_hash[:fit] = [max_width, 999_999] if max_width < natural_width

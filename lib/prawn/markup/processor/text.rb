@@ -99,7 +99,7 @@ module Prawn
       end
 
       def text_options
-        @text_options ||= Support::Hash.deep_merge(default_text_options, options[:text] || {})
+        @text_options ||= HashMerger.deep(default_text_options, options[:text] || {})
       end
 
       def default_text_options

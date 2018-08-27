@@ -142,7 +142,7 @@ module Prawn
         end
 
         def list_options
-          @list_options ||= Support::Hash.deep_merge(default_list_options, options[:list] || {})
+          @list_options ||= HashMerger.deep(default_list_options, options[:list] || {})
         end
 
         def default_list_options
