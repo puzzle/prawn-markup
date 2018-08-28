@@ -9,12 +9,26 @@ module Prawn
         append_text("\n")
       end
 
+      def start_p
+        add_current_text
+      end
+
       def end_p
-        append_text("\n\n") if buffered_text?
+        text = dump_text
+        text.gsub!(/[^\n]/, '') if text.strip.empty?
+        unless text.empty?
+          add_paragraph_margin(true)
+          add_formatted_text(text, text_options)
+          @after_paragraph = true
+        end
+      end
+
+      def start_div
+        add_current_text
       end
 
       def end_div
-        append_text("\n") if buffered_text?
+        add_current_text
       end
 
       def start_a
@@ -48,29 +62,54 @@ module Prawn
       def start_hr
         return if inside_container?
 
-        add_current_text(true)
+        add_current_text(false)
+        @after_paragraph = false
         pdf.move_down(hr_vertical_margin_top)
         pdf.stroke_horizontal_rule
         pdf.move_down(hr_vertical_margin_bottom)
       end
 
       def end_document
-        add_current_text(true)
+        add_current_text
       end
 
       private
 
-      def add_current_text(strip = false)
+      def prepare_text_element
+        if buffered_text?
+          unless text_buffer.end_with?("\n")
+            append_text("\n")
+          end
+        end
+      end
+
+      def add_current_text(margin = true, options = text_options)
+        add_paragraph_margin(margin)
         return unless buffered_text?
 
         string = dump_text
-        string.strip! if strip
-        add_formatted_text(string)
+        string.strip!
+        add_formatted_text(string, options)
       end
 
-      def add_formatted_text(string)
-        pdf.font(text_options[:font] || pdf.font.family, text_options.slice(:size, :style)) do
-          pdf.text(string, text_options)
+      def add_paragraph_margin(margin)
+        if @after_paragraph
+          pdf.move_down(text_margin_bottom) if margin
+          @after_paragraph = false
+        end
+      end
+
+      def add_formatted_text(string, options = text_options)
+        with_font(options) do
+          pdf.text(string, options)
+        end
+      end
+
+      def with_font(options)
+        pdf.font(options[:font] || pdf.font.family,
+                 size: options[:size],
+                 style: options[:style]) do
+          return yield
         end
       end
 
@@ -80,8 +119,11 @@ module Prawn
       end
 
       def hr_vertical_margin_bottom
-        @hr_vertical_margin_bottom ||= begin
-          hr_vertical_margin_top + text_margin_bottom - text_font.line_gap - pdf.line_width
+        @hr_vertical_margin_bottom ||= with_font(text_options) do
+          hr_vertical_margin_top +
+            pdf.font.descender +
+            text_leading -
+            pdf.line_width
         end
       end
 
@@ -96,14 +138,15 @@ module Prawn
       end
 
       def default_text_margin_bottom
-        font = text_font
-        font.line_gap +
-          font.descender +
-          (options[:text][:leading] || pdf.default_leading)
+        with_font(text_options) do
+          pdf.font.line_gap +
+            pdf.font.descender +
+            text_leading
+        end
       end
 
-      def text_font
-        text_options[:font] ? pdf.find_font(text_options[:font]) : pdf.font
+      def text_leading
+        text_options[:leading] || pdf.default_leading
       end
 
       def text_options

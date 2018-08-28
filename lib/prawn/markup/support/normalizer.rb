@@ -20,7 +20,6 @@ module Prawn
 
       def normalize
         close_self_closing_elements
-        remove_trailing_paragraph_breaks
         normalize_spaces
         replace_html_entities
         "<root>#{html}</root>"
@@ -33,10 +32,6 @@ module Prawn
           tag[-1] = '/>' unless tag.end_with?('/>')
           tag
         end
-      end
-
-      def remove_trailing_paragraph_breaks
-        html.gsub!(%r{<br/>\s*</p>}, '</p>')
       end
 
       def normalize_spaces

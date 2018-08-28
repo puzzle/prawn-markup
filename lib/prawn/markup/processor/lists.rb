@@ -19,7 +19,7 @@ module Prawn
         elsif current_table
           add_cell_text_node(current_cell)
         else
-          add_current_text(true)
+          add_current_text
         end
         @list_stack.push(Elements::List.new(ordered))
       end

@@ -252,7 +252,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
         expect(left_positions).to eq([first_col_left, 310, left])
         # fix off by ones
         expect(top_positions).to eq([first_row_top - 1, first_row_top - 1,
-                                     first_row_top + 1 - line - table_padding - leading].map(&:round))
+                                     first_row_top - 1 - line - table_padding - p_gap].map(&:round))
       end
     end
 

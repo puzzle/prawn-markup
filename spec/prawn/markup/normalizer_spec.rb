@@ -17,10 +17,6 @@ RSpec.describe Prawn::Markup::Normalizer do
     expect(normalize('2 &nbsp; 3')).to eq('<root>2   3</root>')
   end
 
-  it 'removes trailing breaks in paragraphs' do
-    expect(normalize('<p>hello<br>YOU! <br>  </p>')).to eq('<root><p>hello<br/>YOU! </p></root>')
-  end
-
   def normalize(html)
     Prawn::Markup::Normalizer.new(html).normalize
   end

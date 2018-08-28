@@ -51,18 +51,19 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               bullet_left, *([desc_left] * 2),
               left].map(&:round))
 
-    sub_list_top = list_top - 2 * line
+    ltop = list_top - p_gap
+    sub_list_top = ltop - 2 * line
     expect(top_positions)
       .to eq([top,
-              list_top, list_top,
-              list_top - line, list_top - line,
+              ltop, ltop,
+              ltop - line, ltop - line,
               sub_list_top, sub_list_top,
               sub_list_top - line, sub_list_top - line,
-              sub_list_top - 2 * line - 1,
+              sub_list_top - 2 * line,
               sub_list_top - 3 * line, sub_list_top - 3 * line,
-              sub_list_top - 4 * line, sub_list_top - 4 * line,
+              sub_list_top - 4 * line - 1, sub_list_top - 4 * line - 1, # fix off by one
               sub_list_top - 5 * line,
-              sub_list_top - 6 * line - list_vertical_margin - leading - line_gap - 1 # fix off by one
+              sub_list_top - 6 * line - list_vertical_margin - leading - line_gap
             ].map(&:round))
   end
 
@@ -81,15 +82,16 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     image_height = image_width * orig_image_dim.last / orig_image_dim.first
 
     expect(images.size).to eq(1)
-    sub_list_top = list_top - 2 * line
+    ltop = list_top - p_gap
+    sub_list_top = ltop - 2 * line
     expect(top_positions)
       .to eq([top,
-              list_top, list_top,
-              list_top - line, list_top - line,
+              ltop, ltop,
+              ltop - line, ltop - line,
               sub_list_top, sub_list_top,
               sub_list_top - line,
               sub_list_top - 2 * line - image_height, sub_list_top - 2 * line - image_height,
-              sub_list_top - 3 * line - image_height, sub_list_top - 3 * line - image_height,
+              sub_list_top - 3 * line - image_height + 1, sub_list_top - 3 * line - image_height + 1, # fix off by one
               sub_list_top - 4 * line - image_height,
               sub_list_top - 5 * line - image_height - list_vertical_margin - leading - line_gap].map(&:round))
   end
@@ -125,7 +127,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                                    ltop, ltop,
                                    ltop - line, ltop - line,
                                    ltop - 2 * line, ltop - 2 * line,
-                                   ltop - 3 * line - list_vertical_margin - line_gap - leading - 7 - 1 # fix off by one
+                                   ltop - 3 * line - list_vertical_margin - line_gap - leading - 7
                                   ].map(&:round))
     end
 
@@ -148,18 +150,18 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                 sub_ordinal_left, sub_desc_left,
                 bullet_left, *([desc_left + 10] * 2),
                 left].map(&:round))
-      ltop = list_top - 7
-      sub_list_top = list_top - 7 - 2 * line
+      ltop = list_top - p_gap - leading - 7
+      sub_list_top = ltop + 1 - 2 * line
       expect(top_positions)
         .to eq([top,
                 ltop, ltop,
-                ltop - line, ltop - line,
+                ltop - line + 1, ltop - line + 1, # fix off by one
                 sub_list_top, sub_list_top,
                 sub_list_top - line, sub_list_top - line,
-                sub_list_top - 2 * line - 1, # fix off by one
-                sub_list_top - 3 * line, sub_list_top - 3 * line,
+                sub_list_top - 2 * line,
+                sub_list_top - 3 * line - 1, sub_list_top - 3 * line - 1, # fix off by one
                 sub_list_top - 4 * line, sub_list_top - 4 * line,
-                sub_list_top - 5 * line,
+                sub_list_top - 5 * line - 1, # fix off by one
                 sub_list_top - 6 * line - list_vertical_margin - leading - line_gap - 7].map(&:round))
     end
   end

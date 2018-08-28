@@ -55,6 +55,9 @@ Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/pra
 Beside these options handled by Prawn / prawn-table, the following values may be customized:
 
 * `[:text][:preprocessor]`: A proc/callable that is called each time before a chunk of text is rendered.
+* `[:text][:margin_bottom]`: Margin after each `<p>`, `<ol>`, `<ul>` or `<table>`. Defaults to about half a line.
+* `[:heading1-6][:margin_top]`: Margin before a heading. Default is 0.
+* `[:heading1-6][:margin_bottom]`: Margin after a heading. Default is 0.
 * `[:table][:placeholder][:too_large]`: If the table content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[table content too large]'.
 * `[:table][:placeholder][:subtable_too_large]`: If the content of a subtable cannot be fitted into the table, this text is rendered instead. Defaults to '[nested tables with automatic width are not supported]'.
 * `[:list][:vertical_margin]`: Margin at the top and the bottom of a list. Default is 5.
@@ -72,6 +75,7 @@ This gem parses the given HTML and layouts the following elements in a vertical 
 
 * Text content: `p`, `div`, `ol`, `ul`, `li`, `hr`
 * Text semantics: `b`, `strong`, `i`, `em`, `u`, `a`, `br`
+* Headings: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
 * Tables: `table`, `tr`, `td`, `th`
 * Media: `img`, `iframe`
 

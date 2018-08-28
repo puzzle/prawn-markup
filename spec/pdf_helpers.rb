@@ -13,6 +13,7 @@ RSpec.shared_context 'pdf_helpers' do
   let(:left) { 36 }
   let(:line) { font_size * 1.156 + leading }
   let(:line_gap) { doc.font.descender }
+  let(:p_gap) { doc.font.descender + doc.font.line_gap }
   let(:content_width) { 540 }
   let(:table_padding) { Prawn::Markup::Builders::TableBuilder::DEFAULT_CELL_PADDING }
   let(:bullet_margin) { Prawn::Markup::Builders::ListBuilder::BULLET_MARGIN }

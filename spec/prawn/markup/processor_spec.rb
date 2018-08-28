@@ -13,7 +13,7 @@ RSpec.describe Prawn::Markup::Processor do
     processor.parse('<p>hello</p><p>world</p>')
     expect(text.strings).to eq(%w[hello world])
     expect(left_positions).to eq([left, left])
-    expect(top_positions).to eq([top, top - 2 * line].map(&:round))
+    expect(top_positions).to eq([top, top - line - p_gap].map(&:round))
   end
 
   it 'renders entities correctly' do

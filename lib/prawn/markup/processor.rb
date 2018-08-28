@@ -21,11 +21,13 @@ module Prawn
       self.logger = defined?(Rails) ? Rails.logger : nil
 
       require 'prawn/markup/processor/text'
+      require 'prawn/markup/processor/headings'
       require 'prawn/markup/processor/images'
       require 'prawn/markup/processor/tables'
       require 'prawn/markup/processor/lists'
 
       prepend Prawn::Markup::Processor::Text
+      prepend Prawn::Markup::Processor::Headings
       prepend Prawn::Markup::Processor::Images
       prepend Prawn::Markup::Processor::Tables
       prepend Prawn::Markup::Processor::Lists

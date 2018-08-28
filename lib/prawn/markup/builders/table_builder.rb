@@ -165,7 +165,7 @@ module Prawn
         end
 
         def column_width_sum
-          column_widths.compact.sum
+          column_widths.compact.inject(:+) || 0
         end
 
         def distribute_remaing_width(count)
@@ -216,9 +216,24 @@ module Prawn
 
         def build_table_options
           HashMerger.deep(default_table_options, options[:table] || {}).tap do |opts|
-            HashMerger.enhance(opts, :cell, extract_text_cell_style(options[:text] || {}))
-            HashMerger.enhance(opts, :header, opts[:cell])
+            build_cell_options(opts)
+            build_header_options(opts)
           end
+        end
+
+        def build_cell_options(opts)
+          HashMerger.enhance(opts, :cell, extract_text_cell_style(options[:text] || {}))
+          convert_style_options(opts[:cell])
+        end
+
+        def build_header_options(opts)
+          HashMerger.enhance(opts, :header, opts[:cell])
+          convert_style_options(opts[:header])
+        end
+
+        def convert_style_options(hash)
+          hash[:font_style] ||= hash.delete(:style)
+          hash[:text_color] ||= hash.delete(:color)
         end
 
         def default_table_options

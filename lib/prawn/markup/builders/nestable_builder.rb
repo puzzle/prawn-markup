@@ -49,7 +49,9 @@ module Prawn
         end
 
         def extract_text_cell_style(hash)
-          hash.slice(*TEXT_STYLE_OPTIONS).tap do |options|
+          TEXT_STYLE_OPTIONS
+            .each_with_object({}) { |key, h| h[key] = hash[key] }
+            .tap do |options|
             options[:font_style] ||= options.delete(:style)
             options[:text_color] ||= options.delete(:color)
           end
