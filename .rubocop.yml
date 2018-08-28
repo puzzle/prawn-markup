@@ -6,7 +6,6 @@ AllCops:
     - vendor/**/*
 
 Metrics/AbcSize:
-  Max: 17
   Severity: error
 
 Metrics/ClassLength:
@@ -14,7 +13,6 @@ Metrics/ClassLength:
   Severity: error
 
 Metrics/CyclomaticComplexity:
-  Max: 6
   Severity: error
 
 Metrics/LineLength:
@@ -26,7 +24,7 @@ Metrics/MethodLength:
   Severity: error
 
 Metrics/ModuleLength:
-  Max: 200
+  Max: 100
   Severity: error
 
 Metrics/ParameterLists:
@@ -45,16 +43,8 @@ ClassVars:
 Documentation:
   Enabled: false
 
-# Missing UTF-8 encoding statements should always be created.
-Encoding:
-  Severity: error
-
 # Keep single line bodys for if and unless
 IfUnlessModifier:
-  Enabled: false
-
-# That's no huge stopper
-Layout/EmptyLines:
   Enabled: false
 
 # We thinks that's fine for specs
@@ -67,42 +57,6 @@ Layout/EmptyLinesAroundClassBody:
 
 # We thinks that's fine
 Layout/EmptyLinesAroundModuleBody:
-  Enabled: false
-
-# We thinks that's fine
-Layout/MultilineOperationIndentation:
-  Enabled: false
-
-# But probably more readable...
-Lint/AmbiguousBlockAssociation:
-  Enabled: false
-
-# We thinks that's fine
-Style/EmptyMethod:
-  Enabled: false
-
-# just false positives for 0.51.0
-Style/MixinUsage:
-  Enabled: false
-
-# Not sure if this is really an established community standard
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
-# We thinks that's fine
-Style/RegexpLiteral:
-  Enabled: false
-
-# We thinks that's fine
-Style/SymbolArray:
-  Enabled: false
-
-# We think that's the developers choice
-Style/SymbolProc:
-  Enabled: false
-
-# We thinks that's fine
-Style/SingleLineBlockParams:
   Enabled: false
 
 # We think that's the developers choice

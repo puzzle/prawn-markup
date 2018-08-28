@@ -4,9 +4,9 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/maintainability)](https://codeclimate.com/github/puzzle/prawn-markup/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/test_coverage)](https://codeclimate.com/github/puzzle/prawn-markup/test_coverage)
 
-Adds simple HTML snippets into [Prawn](http://prawnpdf.org)-generated PDFs. No CSS is supported, all elements are layouted vertically with basic styling options. A major use case for this gem is to include WYSIWYG-generated HTML parts into server-generated PDF documents.
+Adds simple HTML snippets into [Prawn](http://prawnpdf.org)-generated PDFs. All elements are layouted vertically using Prawn's formatting options. A major use case for this gem is to include WYSIWYG-generated HTML parts into server-generated PDF documents.
 
-This gem does not and will never convert entire HTML + CSS pages to PDF. Use [wkhtmltopdf](https://wkhtmltopdf.org/) for that.
+This gem does not and will never convert entire HTML + CSS pages to PDF. Use [wkhtmltopdf](https://wkhtmltopdf.org/) for that. Have a look at the details of the [Supported HTML](#supported-html).
 
 ## Installation
 
@@ -26,7 +26,54 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your prawn Document, add HTML like this:
+
+```ruby
+doc = Prawn::Document.new
+doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>')
+```
+
+To customize element formatting, do:
+
+```ruby
+doc = Prawn::Document.new
+doc.markup_options = {
+  text: { font: 'Times' },
+  table: { header_style: { style: :bold, background_color: 'FFFFDD' } }
+}
+doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>', text: { align: :center })
+```
+
+Options may be set for `text`, `table` (`cell` and `header`) and `list` (`content` and `bullet`).
+Text options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`. Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/prawn-table) and have the following additional options: `padding`, `borders`, `border_width`, `border_color`, `background_color`, `border_lines`, `rotate`, `overflow`, `min_font_size`.
+
+Beside these options handled by Prawn / prawn-table, the following values may be customized:
+
+* `[:text][:preprocessor]`: A proc/callable that is called each time before a chunk of text is rendered.
+* `[:table][:placeholder][:too_large]`: If the table content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[table content too large]'.
+* `[:table][:placeholder][:subtable_too_large]`: If the content of a subtable cannot be fitted into the table, this text is rendered instead. Defaults to '[nested tables with automatic width are not supported]'.
+* `[:list][:vertical_margin]`: Margin at the top and the bottom of a list. Default is 5.
+* `[:list][:bullet][:char]`: The text used as bullet in unordered lists. Default is '•'.
+* `[:list][:bullet][:margin]`: Margin before the bullet. Default is 10.
+* `[:list][:content][:margin]`: Margin between the bullet and the content. Default is 10.
+* `[:list][:placeholder][:too_large]`: If the list content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[list content too large]'.
+* `[:image][:placeholder]`: If an image is not supported, this text/callable is rendered instead. Defaults to '[unsupported image]'.
+* `[:iframe][:placeholder]`: If the HTML contains IFrames, this text/callable is rendered instead.
+A callable gets the URL of the IFrame as an argument. Defaults to ignore iframes.
+
+## Supported HTML
+
+This gem parses the given HTML and layouts the following elements in a vertical order:
+
+* Text content: `p`, `div`, `ol`, `ul`, `li`, `hr`
+* Text semantics: `b`, `strong`, `i`, `em`, `u`, `a`, `br`
+* Tables: `table`, `tr`, `td`, `th`
+* Media: `img`, `iframe`
+
+All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`.
+
+Images must be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
+
 
 ## Development
 

@@ -117,7 +117,7 @@ module Prawn
       end
 
       def placeholder_value(keys, *args)
-        placeholder = keys.inject(options) { |opts, key| opts ? opts[key] : nil }
+        placeholder = dig_options(keys)
         return if placeholder.nil?
 
         if placeholder.respond_to?(:call)
@@ -125,6 +125,10 @@ module Prawn
         else
           placeholder.to_s
         end
+      end
+
+      def dig_options(keys)
+        keys.inject(options) { |opts, key| opts ? opts[key] : nil }
       end
 
       def logger

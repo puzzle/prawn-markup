@@ -36,7 +36,7 @@ module Prawn
       end
 
       def remove_trailing_paragraph_breaks
-        html.gsub!(/<br\/>\s*<\/p>/, '</p>')
+        html.gsub!(%r{<br/>\s*</p>}, '</p>')
       end
 
       def normalize_spaces

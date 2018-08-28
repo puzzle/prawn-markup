@@ -54,6 +54,16 @@ module Prawn
             options[:text_color] ||= options.delete(:color)
           end
         end
+
+        def type_key(object)
+          path = object.class.name.to_s
+          i = path.rindex('::')
+          if i
+            path[(i + 2)..-1].downcase
+          else
+            path.downcase
+          end
+        end
       end
     end
   end

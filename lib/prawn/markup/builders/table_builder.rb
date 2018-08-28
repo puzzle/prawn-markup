@@ -35,25 +35,37 @@ module Prawn
         attr_reader :cells, :column_widths, :failover_strategy
 
         def prawn_table_options
-          table_options.dup.tap do |options|
-            options.delete(:placeholder)
-            options.delete(:header_style)
-            TEXT_STYLE_OPTIONS.each { |key| options[:cell_style].delete(key) }
+          static_prawn_table_options.tap do |options|
             options[:width] = total_width
             options[:header] = cells.first && cells.first.all?(&:header)
             options[:column_widths] = column_widths
           end
         end
 
+        def static_prawn_table_options
+          table_options.dup.tap do |options|
+            options.delete(:placeholder)
+            options.delete(:header)
+            TEXT_STYLE_OPTIONS.each { |key| options[:cell].delete(key) }
+            options[:cell_style] = options.delete(:cell)
+          end
+        end
+
         def convert_cells
+          map_cells do |cell, col|
+            style_options = table_options[cell.header ? :header : :cell]
+            if cell.single?
+              normalize_cell_node(cell.nodes.first, column_content_width(col), style_options)
+            else
+              cell_table(cell, column_content_width(col), style_options)
+            end
+          end
+        end
+
+        def map_cells
           cells.map do |row|
             row.map.with_index do |cell, col|
-              style_options = table_options[cell.header ? :header_style : :cell_style]
-              if cell.single?
-                normalize_cell_node(cell.nodes.first, column_content_width(col), style_options)
-              else
-                cell_table(cell, column_content_width(col), style_options)
-              end
+              yield cell, col
             end
           end
         end
@@ -77,23 +89,36 @@ module Prawn
                          ))
         end
 
-        # rubocop:disable Metrics/MethodLength
         def normalize_cell_node(node, width, style_options = {})
-          case node
-          when Elements::List
-            opts = options.merge(text: extract_text_cell_style(table_options[:cell_style]))
-            subtable(width) { ListBuilder.new(pdf, node, width, opts).make(true) }
-          when Array
-            subtable(width) { TableBuilder.new(pdf, node, width, options).make }
-          when Hash # an image, usually
-            normalize_cell_hash(node, width, style_options)
-          when String
-            style_options.merge(content: node)
+          normalizer = "cell_node_for_#{type_key(node)}"
+          if respond_to?(normalizer, true)
+            send(normalizer, node, width, style_options)
           else
             ''
           end
         end
-        # rubocop:enable Metrics/MethodLength
+
+        def cell_node_for_list(node, width, _style_options = {})
+          opts = options.merge(text: extract_text_cell_style(table_options[:cell]))
+          subtable(width) do
+            ListBuilder.new(pdf, node, width, opts).make(true)
+          end
+        end
+
+        def cell_node_for_array(node, width, _style_options = {})
+          subtable(width) do
+            TableBuilder.new(pdf, node, width, options).make
+          end
+        end
+
+        def cell_node_for_hash(node, width, style_options = {})
+          # usually an image
+          normalize_cell_hash(node, width, style_options)
+        end
+
+        def cell_node_for_string(node, _width, style_options = {})
+          style_options.merge(content: node)
+        end
 
         def subtable(width)
           if width.nil? && failover_strategy == :subtable_placeholders
@@ -183,7 +208,7 @@ module Prawn
 
         def horizontal_padding
           @horizontal_padding ||= begin
-            paddings = table_options[:cell_style][:padding] || [DEFAULT_CELL_PADDING] * 4
+            paddings = table_options[:cell][:padding] || [DEFAULT_CELL_PADDING] * 4
             paddings[1] + paddings[3]
           end
         end
@@ -194,18 +219,18 @@ module Prawn
 
         def build_table_options
           HashMerger.deep(default_table_options, options[:table] || {}).tap do |opts|
-            HashMerger.enhance(opts, :cell_style, extract_text_cell_style(options[:text] || {}))
-            HashMerger.enhance(opts, :header_style, opts[:cell_style])
+            HashMerger.enhance(opts, :cell, extract_text_cell_style(options[:text] || {}))
+            HashMerger.enhance(opts, :header, opts[:cell])
           end
         end
 
         def default_table_options
           {
-            cell_style: {
+            cell: {
               inline_format: true,
               padding: [DEFAULT_CELL_PADDING] * 4
             },
-            header_style: {},
+            header: {},
             placeholder: {
               subtable_too_large: '[nested tables with automatic width are not supported]'
             }

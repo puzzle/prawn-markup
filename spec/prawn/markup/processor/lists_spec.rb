@@ -5,7 +5,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
   include_context 'pdf_helpers'
 
   let(:bullet_left) { left + bullet_margin + bullet_padding }
-  let(:desc_left) { left + bullet_margin + bullet_width + description_margin }
+  let(:desc_left) { left + bullet_margin + bullet_width + content_margin }
   let(:list_top) { top - line - list_vertical_margin - line_gap }
 
   it 'creates an unordered list' do
@@ -22,7 +22,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
   it 'creates an ordered list' do
     processor.parse('<ol><li>first</li><li>second</li><li>third</li></ol>world')
     expect(text.strings).to eq(['1.', 'first', '2.', 'second', '3.', 'third', 'world'])
-    desc_left = left + bullet_margin + ordinal_width + description_margin
+    desc_left = left + bullet_margin + ordinal_width + content_margin
     expect(left_positions).to eq([bullet_left, desc_left].map(&:round) * 3 + [left])
     list_top = top - list_vertical_margin - line_gap
     expect(top_positions).to eq([list_top, list_top,
@@ -40,7 +40,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       'or probably even some more and then we go on and on and on and on</li></ul>world'
     )
     sub_ordinal_left = desc_left + bullet_margin + bullet_padding
-    sub_desc_left = desc_left + bullet_margin + ordinal_width + description_margin
+    sub_desc_left = desc_left + bullet_margin + ordinal_width + content_margin
     expect(left_positions)
       .to eq([left,
               bullet_left, desc_left,
@@ -76,7 +76,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       'or probably even some more and then we go on and on and on and on</li></ul>world'
     )
     orig_image_dim = [100, 38]
-    sub_desc_left = desc_left + bullet_margin + ordinal_width + description_margin
+    sub_desc_left = desc_left + bullet_margin + ordinal_width + content_margin
     image_width = content_width - sub_desc_left
     image_height = image_width * orig_image_dim.last / orig_image_dim.first
 
@@ -110,18 +110,22 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     let(:font_size) { 10 }
     let(:leading) { 8 }
     let(:options) do
-      { text: { leading: leading, size: font_size } }
+      {
+        text: { leading: leading, size: font_size },
+        list: { vertical_margin: 12, bullet: { char: '*' }, content: { margin: 20 } }
+      }
     end
 
     it 'creates an unordered list' do
       processor.parse('hello<ul><li>first</li><li>second</li><li>third</li></ul>world')
-      expect(text.strings).to eq(['hello', bullet, 'first', bullet, 'second', bullet, 'third', 'world'])
-      expect(left_positions).to eq([left] + [bullet_left, desc_left].map(&:round) * 3 + [left])
+      expect(text.strings).to eq(['hello', '*', 'first', '*', 'second', '*', 'third', 'world'])
+      expect(left_positions).to eq([left] + [bullet_left, desc_left + 10].map(&:round) * 3 + [left])
+      ltop = list_top - 7
       expect(top_positions).to eq([top,
-                                   list_top, list_top,
-                                   list_top - line, list_top - line,
-                                   list_top - 2 * line, list_top - 2 * line,
-                                   list_top - 3 * line - list_vertical_margin - line_gap - leading - 1 # fix off by one
+                                   ltop, ltop,
+                                   ltop - line, ltop - line,
+                                   ltop - 2 * line, ltop - 2 * line,
+                                   ltop - 3 * line - list_vertical_margin - line_gap - leading - 7 - 1 # fix off by one
                                   ].map(&:round))
     end
 
@@ -133,29 +137,30 @@ RSpec.describe Prawn::Markup::Processor::Tables do
         '</li><li>third has a lot of text spaning more than two lines at least' \
         'or probably even some more and then we go on and on and on and on</li></ul>world'
       )
-      sub_ordinal_left = desc_left + bullet_margin + bullet_padding
-      sub_desc_left = desc_left + bullet_margin + 8 + description_margin
+      sub_ordinal_left = desc_left + 10 + bullet_margin + bullet_padding
+      sub_desc_left = desc_left + 10 + bullet_margin + 8 + content_margin + 10
       expect(left_positions)
         .to eq([left,
-                bullet_left, desc_left,
-                bullet_left, desc_left,
+                bullet_left, desc_left + 10,
+                bullet_left, desc_left + 10,
                 sub_ordinal_left, sub_desc_left,
                 sub_ordinal_left, *([sub_desc_left] * 2),
                 sub_ordinal_left, sub_desc_left,
-                bullet_left, *([desc_left] * 2),
+                bullet_left, *([desc_left + 10] * 2),
                 left].map(&:round))
-      sub_list_top = list_top - 2 * line
+      ltop = list_top - 7
+      sub_list_top = list_top - 7 - 2 * line
       expect(top_positions)
         .to eq([top,
-                list_top, list_top,
-                list_top - line, list_top - line,
+                ltop, ltop,
+                ltop - line, ltop - line,
                 sub_list_top, sub_list_top,
                 sub_list_top - line, sub_list_top - line,
                 sub_list_top - 2 * line - 1, # fix off by one
                 sub_list_top - 3 * line, sub_list_top - 3 * line,
                 sub_list_top - 4 * line, sub_list_top - 4 * line,
                 sub_list_top - 5 * line,
-                sub_list_top - 6 * line - list_vertical_margin - leading - line_gap].map(&:round))
+                sub_list_top - 6 * line - list_vertical_margin - leading - line_gap - 7].map(&:round))
     end
   end
 end

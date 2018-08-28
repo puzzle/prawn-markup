@@ -62,7 +62,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                     "\n<ul>\n\t<li>first</li>\n\t<li>second</li>\n</ul>" \
                     '</td><td>two</td></tr></table>')
     bullet_left = first_col_left + bullet_margin + bullet_padding
-    desc_left = first_col_left + bullet_margin + description_margin + bullet_width
+    desc_left = first_col_left + bullet_margin + content_margin + bullet_width
     list_top = second_row_top - list_vertical_margin
     expect(text.strings).to eq(['Col One', 'Col Two', bullet, 'first', bullet, 'second', 'two'])
     expect(left_positions)
@@ -81,10 +81,10 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       '</td><td>two</td></tr></table>'
     )
     bullet_left = first_col_left + bullet_margin + bullet_padding
-    desc_left = first_col_left + bullet_margin + description_margin + bullet_width
+    desc_left = first_col_left + bullet_margin + content_margin + bullet_width
     list_top = second_row_top - list_vertical_margin
     sub_bullet_left = desc_left + bullet_margin + bullet_padding
-    sub_desc_left = desc_left + bullet_margin + description_margin + ordinal_width
+    sub_desc_left = desc_left + bullet_margin + content_margin + ordinal_width
     expect(text.strings).to eq(['Col One', 'Col Two',
                                 bullet, 'first', bullet, 'second',
                                 '1.', 'sub 1', '2.', 'sub 2',
@@ -249,7 +249,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       let(:options) do
         {
           text: { size: 15, style: :bold },
-          table: { cell_style: { font: 'Courier', size: 14, text_color: 'FF0000', border_width: 1, padding: 2 } }
+          table: { cell: { font: 'Courier', size: 14, text_color: 'FF0000', border_width: 1, padding: 2 } }
         }
       end
 
@@ -266,8 +266,8 @@ RSpec.describe Prawn::Markup::Processor::Tables do
         {
           text: { size: 15, style: :italic },
           table: {
-            cell_style: { font: 'Courier', size: 14, text_color: 'FF0000' },
-            header_style: { font_style: :bold, size: 16, align: :center }
+            cell: { font: 'Courier', size: 14, text_color: 'FF0000' },
+            header: { font_style: :bold, size: 16, align: :center }
           }
         }
       end

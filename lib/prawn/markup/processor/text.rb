@@ -65,6 +65,10 @@ module Prawn
 
         string = dump_text
         string.strip! if strip
+        add_formatted_text(string)
+      end
+
+      def add_formatted_text(string)
         pdf.font(text_options[:font] || pdf.font.family, text_options.slice(:size, :style)) do
           pdf.text(string, text_options)
         end
@@ -88,9 +92,13 @@ module Prawn
 
       def text_margin_bottom
         options[:text] ||= {}
-        options[:text][:margin_bottom] ||=
-          text_font.line_gap +
-          text_font.descender +
+        options[:text][:margin_bottom] ||= default_text_margin_bottom
+      end
+
+      def default_text_margin_bottom
+        font = text_font
+        font.line_gap +
+          font.descender +
           (options[:text][:leading] || pdf.default_leading)
       end
 

@@ -16,7 +16,7 @@ RSpec.shared_context 'pdf_helpers' do
   let(:content_width) { 540 }
   let(:table_padding) { Prawn::Markup::Builders::TableBuilder::DEFAULT_CELL_PADDING }
   let(:bullet_margin) { Prawn::Markup::Builders::ListBuilder::BULLET_MARGIN }
-  let(:description_margin) { Prawn::Markup::Builders::ListBuilder::DESCRIPTION_MARGIN }
+  let(:content_margin) { Prawn::Markup::Builders::ListBuilder::CONTENT_MARGIN }
   let(:list_vertical_margin) { Prawn::Markup::Builders::ListBuilder::VERTICAL_MARGIN }
   let(:bullet) { Prawn::Markup::Builders::ListBuilder::BULLET_CHAR }
   let(:bullet_width) { 4 }

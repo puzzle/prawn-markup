@@ -4,7 +4,7 @@ module Prawn
       class ListBuilder < NestableBuilder
         BULLET_CHAR = '•'.freeze
         BULLET_MARGIN = 10
-        DESCRIPTION_MARGIN = 10
+        CONTENT_MARGIN = 10
         VERTICAL_MARGIN = 5
 
         def initialize(pdf, list, total_width, options = {})
@@ -15,8 +15,8 @@ module Prawn
 
         def make(main = false)
           pdf.make_table(convert_list, list_table_options) do |t|
-            t.columns(0).style(column_cell_style(:bullet_style))
-            t.columns(1).style(column_cell_style(:description_style))
+            t.columns(0).style(column_cell_style(:bullet))
+            t.columns(1).style(column_cell_style(:content))
             set_paddings(t, main)
           end
         end
@@ -49,7 +49,7 @@ module Prawn
 
         def set_row_padding(row, padding)
           row.columns(0).padding = [*padding, bullet_margin]
-          row.columns(1).padding = [*padding, description_margin]
+          row.columns(1).padding = [*padding, content_margin]
         end
 
         def convert_list
@@ -64,7 +64,7 @@ module Prawn
 
         def list_item_table(item)
           data = item.nodes.map { |n| [normalize_list_item_node(n)] }
-          style = column_cell_style(:description_style)
+          style = column_cell_style(:content)
                   .merge(borders: [], padding: [0, 0, padding_bottom, 0])
           pdf.make_table(data, cell_style: style) do
             rows(-1).padding = [0, 0, 0, 0]
@@ -72,20 +72,29 @@ module Prawn
         end
 
         def normalize_list_item_node(node)
-          case node
-          when Elements::List # sublist
-            ListBuilder.new(pdf, node, description_width, options).make
-          when Hash
-            normalize_cell_hash(node, description_width)
-          when String
-            node
+          normalizer = "item_node_for_#{type_key(node)}"
+          if respond_to?(normalizer, true)
+            send(normalizer, node)
           else
             ''
           end
         end
 
-        def description_width
-          column_widths.last && column_widths.last - description_margin
+        def item_node_for_list(node)
+          # sublist
+          ListBuilder.new(pdf, node, content_width, options).make
+        end
+
+        def item_node_for_hash(node)
+          normalize_cell_hash(node, content_width)
+        end
+
+        def item_node_for_string(node)
+          node
+        end
+
+        def content_width
+          column_widths.last && column_widths.last - content_margin
         end
 
         def compute_column_widths
@@ -98,13 +107,13 @@ module Prawn
 
         def bullet_text_width
           font = bullet_font
-          font_size = column_cell_style(:bullet_style)[:size] || pdf.font_size
+          font_size = column_cell_style(:bullet)[:size] || pdf.font_size
           encoded = font.normalize_encoding(bullet(list.items.size))
           font.compute_width_of(encoded, size: font_size)
         end
 
         def bullet_font
-          style = column_cell_style(:bullet_style)
+          style = column_cell_style(:bullet)
           font_name = style[:font] || pdf.font.family
           pdf.find_font(font_name, style: style[:font_style])
         end
@@ -112,17 +121,17 @@ module Prawn
         # option accessors
 
         def bullet(index)
-          list.ordered ? "#{index}." : (list_options[:bullet_char] || BULLET_CHAR)
+          list.ordered ? "#{index}." : (column_cell_style(:bullet)[:char] || BULLET_CHAR)
         end
 
         # margin before bullet
         def bullet_margin
-          list_options[:bullet_margin] || BULLET_MARGIN
+          column_cell_style(:bullet)[:margin] || BULLET_MARGIN
         end
 
-        # margin between bullet and description
-        def description_margin
-          list_options[:description_margin] || DESCRIPTION_MARGIN
+        # margin between bullet and content
+        def content_margin
+          column_cell_style(:content)[:margin] || CONTENT_MARGIN
         end
 
         # margin at the top and the bottom of the list
@@ -132,7 +141,7 @@ module Prawn
 
         # vertical padding between list items
         def padding_bottom
-          column_cell_style(:description_style)[:leading] || 0
+          column_cell_style(:content)[:leading] || 0
         end
 
         def column_cell_style(key)
@@ -147,8 +156,8 @@ module Prawn
 
         def default_list_options
           {
-            description_style: {},
-            bullet_style: { align: :right }
+            content: {},
+            bullet: { align: :right }
           }
         end
       end
