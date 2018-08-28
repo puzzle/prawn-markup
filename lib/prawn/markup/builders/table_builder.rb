@@ -52,21 +52,19 @@ module Prawn
         end
 
         def convert_cells
-          map_cells do |cell, col|
-            style_options = table_options[cell.header ? :header : :cell]
-            if cell.single?
-              normalize_cell_node(cell.nodes.first, column_content_width(col), style_options)
-            else
-              cell_table(cell, column_content_width(col), style_options)
+          cells.map do |row|
+            row.map.with_index do |cell, col|
+              convert_cell(cell, col)
             end
           end
         end
 
-        def map_cells
-          cells.map do |row|
-            row.map.with_index do |cell, col|
-              yield cell, col
-            end
+        def convert_cell(cell, col)
+          style_options = table_options[cell.header ? :header : :cell]
+          if cell.single?
+            normalize_cell_node(cell.nodes.first, column_content_width(col), style_options)
+          else
+            cell_table(cell, column_content_width(col), style_options)
           end
         end
 
