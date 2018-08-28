@@ -47,7 +47,8 @@ RSpec.shared_context 'pdf_helpers' do
     f = Tempfile.new(%w[spec- .pdf])
     f.close
     doc.render_file(f.path)
-    `xdg-open #{f.path}`
+    command = /darwin/ =~ RUBY_PLATFORM ? 'open' : 'xdg-open'
+    `#{command} #{f.path} &`
   ensure
     f.unlink
   end

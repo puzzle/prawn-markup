@@ -163,4 +163,20 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                 sub_list_top - 6 * line - list_vertical_margin - leading - line_gap - 7].map(&:round))
     end
   end
+
+  context 'with impossible options' do
+    let(:font_size) { 40 }
+    let(:options) do
+      {
+        text: { size: font_size },
+        list: { bullet: { margin: 400 }, content: { margin: 500, padding: 200 } }
+      }
+    end
+
+    it 'renders placeholder' do
+      processor.parse('<ul><li>first waytolargeitemwithsolongstrings</li><li>second</li></ul>')
+      expect(text.strings).to eq(['[list content too large]'])
+    end
+  end
+
 end

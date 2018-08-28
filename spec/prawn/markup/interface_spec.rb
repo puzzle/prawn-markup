@@ -22,4 +22,12 @@ RSpec.describe Prawn::Markup::Interface do
     expect(top_positions).to eq([top, top - 2 * line + 2].map(&:round))
   end
 
+  it 'merges both options' do
+    doc.markup_options[:text] = { size: 8, style: :italic }
+    doc.markup('<p>hello world</p><hr/><p>kthxbye</p>', text: { size: font_size })
+
+    expect(text.strings).to eq(['hello world', 'kthxbye'])
+    expect(top_positions).to eq([top, top - 2 * line + 2].map(&:round))
+  end
+
 end

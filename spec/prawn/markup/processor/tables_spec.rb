@@ -117,6 +117,17 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(images.first.hash[:Width]).to eq(100)
   end
 
+  it 'creates images with text inside tables' do
+    processor.parse('<table><tr><th>Col One</th><th>Col Two</th></tr><tr><td>' \
+                    "Here comes an image: <img src=\"#{encode_image('logo.png')}\"> That was nice, not?" \
+                    '</td><td>two</td></tr></table>')
+
+    expect(text.strings).to eq(['Col One', 'Col Two', 'Here comes an image:', 'That was nice, not?', 'two'])
+    expect(left_positions).to eq([first_col_left, 334, first_col_left, first_col_left, 334])
+    expect(images.size).to eq(1)
+    expect(images.first.hash[:Width]).to eq(100)
+  end
+
   it 'uses column widths' do
     processor.parse(
       '<table><tr><td style="width: 3cm;">Col One</td><td>Col Two</td><td style="width: 40%;">Col Three</td></tr>' \
@@ -283,4 +294,21 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       end
     end
   end
+
+  context 'with impossible options' do
+    let(:font_size) { 40 }
+    let(:options) do
+      {
+        text: { size: font_size },
+        table: { cell: { padding: 200 } }
+      }
+    end
+
+    it 'renders placeholder' do
+      processor.parse('<table><tr><th>Col One</th><th>Col Two</th></tr>' \
+                        '<tr><td>hello</td><td>world</td></tr></table>')
+      expect(text.strings).to eq(['[table content too large]'])
+    end
+  end
+
 end

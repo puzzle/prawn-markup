@@ -4,7 +4,7 @@ module Prawn
       attr_writer :markup_options
 
       def markup(html, options = {})
-        options = markup_options.merge(options)
+        options = HashMerger.deep(markup_options, options)
         Processor.new(self, options).parse(html)
       end
 

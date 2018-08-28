@@ -37,15 +37,20 @@ To customize element formatting, do:
 
 ```ruby
 doc = Prawn::Document.new
+# set options for the entire document
 doc.markup_options = {
   text: { font: 'Times' },
-  table: { header_style: { style: :bold, background_color: 'FFFFDD' } }
+  table: { header: { style: :bold, background_color: 'FFFFDD' } }
 }
+# set additional options for each single call
 doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>', text: { align: :center })
 ```
 
 Options may be set for `text`, `table` (`cell` and `header`) and `list` (`content` and `bullet`).
-Text options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`. Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/prawn-table) and have the following additional options: `padding`, `borders`, `border_width`, `border_color`, `background_color`, `border_lines`, `rotate`, `overflow`, `min_font_size`.
+
+Text options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`.
+
+Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/prawn-table) and have the following additional options: `padding`, `borders`, `border_width`, `border_color`, `background_color`, `border_lines`, `rotate`, `overflow`, `min_font_size`. Options from `text` may be overridden.
 
 Beside these options handled by Prawn / prawn-table, the following values may be customized:
 

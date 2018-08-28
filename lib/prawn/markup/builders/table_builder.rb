@@ -110,7 +110,6 @@ module Prawn
         end
 
         def cell_node_for_hash(node, width, style_options = {})
-          # usually an image
           normalize_cell_hash(node, width, style_options)
         end
 
@@ -206,8 +205,8 @@ module Prawn
 
         def horizontal_padding
           @horizontal_padding ||= begin
-            paddings = table_options[:cell][:padding] || [DEFAULT_CELL_PADDING] * 4
-            paddings[1] + paddings[3]
+            padding = table_options[:cell][:padding] || [DEFAULT_CELL_PADDING] * 4
+            padding.is_a?(Array) ? padding[1] + padding[3] : padding
           end
         end
 
