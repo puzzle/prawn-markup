@@ -1,7 +1,9 @@
 AllCops:
   DisplayCopNames: true
   Exclude:
+    - '*.gemspec'
     - spec/**/*
+    - vendor/**/*
 
 Metrics/AbcSize:
   Max: 17
