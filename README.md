@@ -1,5 +1,9 @@
 # Prawn::Markup
 
+[![Build Status](https://travis-ci.org/puzzle/prawn-markup.svg?branch=master)](https://travis-ci.org/puzzle/prawn-markup)
+[![Maintainability](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/maintainability)](https://codeclimate.com/github/puzzle/prawn-markup/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/test_coverage)](https://codeclimate.com/github/puzzle/prawn-markup/test_coverage)
+
 Adds simple HTML snippets into [Prawn](http://prawnpdf.org)-generated PDFs. No CSS is supported, all elements are layouted vertically with basic styling options. A major use case for this gem is to include WYSIWYG-generated HTML parts into server-generated PDF documents.
 
 This gem does not and will never convert entire HTML + CSS pages to PDF. Use [wkhtmltopdf](https://wkhtmltopdf.org/) for that.
