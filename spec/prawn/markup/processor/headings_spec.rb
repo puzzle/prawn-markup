@@ -19,6 +19,13 @@ RSpec.describe Prawn::Markup::Processor::Headings do
     expect(top_positions).to eq([737, 737, 716, 694, 675])
   end
 
+  it 'headings in tables are basically supported' do
+    processor.parse('<table><tr><td><h1>hello</h1>world and universe and everything</td><td><h2>subtitle</h2></td></tr></table>')
+    expect(text.strings).to eq(['hello', 'world and universe and everything', 'subtitle'])
+    # values copied from visually controlled run
+    expect(top_positions).to eq([729, 709, 731])
+  end
+
   context 'with options' do
     let(:options) do
       {

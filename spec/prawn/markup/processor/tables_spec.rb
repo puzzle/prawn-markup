@@ -57,6 +57,38 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       .to eq([first_col_left, 345, first_sub_col_left, 159, first_sub_col_left, 159, 345])
   end
 
+  it 'creates paragraphs inside tables' do
+    processor.parse('<table><tr><td>boot<p>hello</p><p>world</p>and universe</td>' \
+                    '<td><p>other</p><p><br/></p><p>last</p></td></tr></table>')
+    expect(text.strings).to eq(['boot', 'hello', 'world', 'and universe', 'other', 'last'])
+    first_sub_col_left = first_col_left + table_padding
+    expect(left_positions)
+      .to eq([first_col_left, first_col_left, first_col_left, first_col_left, 342, 342])
+    expect(top_positions)
+      .to eq([first_row_top,
+              first_row_top - line - 1,
+              first_row_top - 3 * line - 1,
+              first_row_top - 5 * line - 1,
+              first_row_top,
+              first_row_top - 4 * line - 1].map(&:round))
+  end
+
+  it 'creates divs inside tables' do
+    processor.parse('<table><tr><td>boot<div>hello<div>world</div><div>and universe</div></div>all the rest</td>' \
+                    '<td><div>other</div></td></tr></table>')
+    expect(text.strings).to eq(['boot', 'hello', 'world', 'and universe', 'all the rest', 'other'])
+    first_sub_col_left = first_col_left + table_padding
+    expect(left_positions)
+      .to eq([first_col_left, first_col_left, first_col_left, first_col_left, first_col_left, 368])
+    expect(top_positions)
+      .to eq([first_row_top,
+              first_row_top - 1 * line - 1,
+              first_row_top - 2 * line - 1,
+              first_row_top - 3 * line - 1,
+              first_row_top - 4 * line - 1,
+              first_row_top].map(&:round))
+  end
+
   it 'creates lists inside tables' do
     processor.parse('<table><tr><th>Col One</th><th>Col Two</th></tr><tr><td>' \
                     "\n<ul>\n\t<li>first</li>\n\t<li>second</li>\n</ul>" \

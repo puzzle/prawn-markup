@@ -10,25 +10,24 @@ module Prawn
       end
 
       def start_p
-        add_current_text
+        handle_text_element
       end
 
       def end_p
-        text = dump_text
-        text.gsub!(/[^\n]/, '') if text.strip.empty?
-        unless text.empty?
-          add_paragraph_margin(true)
-          add_formatted_text(text, text_options)
-          @after_paragraph = true
+        if inside_container?
+          append_new_line
+          append_text("\n")
+        else
+          add_paragraph
         end
       end
 
       def start_div
-        add_current_text
+        handle_text_element
       end
 
       def end_div
-        add_current_text
+        handle_text_element
       end
 
       def start_a
@@ -63,7 +62,6 @@ module Prawn
         return if inside_container?
 
         add_current_text(false)
-        @after_paragraph = false
         pdf.move_down(hr_vertical_margin_top)
         pdf.stroke_horizontal_rule
         pdf.move_down(hr_vertical_margin_bottom)
@@ -75,11 +73,25 @@ module Prawn
 
       private
 
-      def prepare_text_element
-        if buffered_text?
-          unless text_buffer.end_with?("\n")
-            append_text("\n")
-          end
+      def handle_text_element
+        if inside_container?
+          append_new_line
+        else
+          add_current_text
+        end
+      end
+
+      def append_new_line
+        append_text("\n") if buffered_text? && text_buffer[-1] != "\n"
+      end
+
+      def add_paragraph
+        text = dump_text
+        text.gsub!(/[^\n]/, '') if text.strip.empty?
+        unless text.empty?
+          add_paragraph_margin(true)
+          add_formatted_text(text, text_options)
+          @after_paragraph = true
         end
       end
 

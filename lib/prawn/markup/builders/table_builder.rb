@@ -76,15 +76,15 @@ module Prawn
 
         # cell with multiple nodes is represented as single-column table
         def cell_table(cell, width, style_options)
-          data = cell.nodes.map { |n| [normalize_cell_node(n, width)] }
+          data = cell.nodes.map { |n| [normalize_cell_node(n, width, style_options)] }
           pdf.make_table(data,
                          width: width,
-                         cell_style: style_options.merge(
+                         cell_style: {
                            padding: [0, 0, 0, 0],
                            borders: [],
                            border_width: 0,
                            inline_format: true
-                         ))
+                         })
         end
 
         def normalize_cell_node(node, width, style_options = {})

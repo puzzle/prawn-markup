@@ -7,12 +7,32 @@ module Prawn
 
       (1..6).each do |i|
         define_method("start_h#{i}") do
-          add_current_text(false)
-          pdf.move_down(heading_options(i)[:margin_top] || 0)
+          start_heading(i)
         end
 
         define_method("end_h#{i}") do
-          options = heading_options(i)
+          end_heading(i)
+        end
+      end
+
+      def start_heading(level)
+        if current_table
+          add_cell_text_node(current_cell)
+        elsif current_list
+          add_cell_text_node(current_list_item)
+        else
+          add_current_text(false)
+          pdf.move_down(heading_options(level)[:margin_top] || 0)
+        end
+      end
+
+      def end_heading(level)
+        options = heading_options(level)
+        if current_table
+          add_cell_text_node(current_cell, options)
+        elsif current_list
+          add_cell_text_node(current_list_item, options)
+        else
           add_current_text(false, options)
           pdf.move_down(options[:margin_bottom] || 0)
         end

@@ -71,9 +71,9 @@ module Prawn
         super || current_table
       end
 
-      def add_cell_text_node(cell)
+      def add_cell_text_node(cell, options = {})
         return unless buffered_text?
-        cell.nodes << { content: dump_text.strip }
+        cell.nodes << options.merge(content: dump_text.strip)
       end
 
       def add_cell_image(cell)
