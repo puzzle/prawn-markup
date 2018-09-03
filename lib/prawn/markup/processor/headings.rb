@@ -34,7 +34,7 @@ module Prawn
           add_cell_text_node(current_list_item, options)
         else
           add_current_text(options)
-          @margin_bottom = options[:margin_bottom]
+          put_bottom_margin(options[:margin_bottom])
         end
       end
 
@@ -42,8 +42,8 @@ module Prawn
 
       def current_heading_margin_top(level)
         top_margin = heading_options(level)[:margin_top] || 0
-        margin = [top_margin, @margin_bottom || 0].max
-        @margin_bottom = nil
+        margin = [top_margin, @bottom_margin || 0].max
+        put_bottom_margin(nil)
         margin
       end
 

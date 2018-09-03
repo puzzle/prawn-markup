@@ -65,6 +65,7 @@ Beside these options handled by Prawn / prawn-table, the following values may be
 * `[:list][:bullet][:margin]`: Margin before the bullet. Default is 10.
 * `[:list][:content][:margin]`: Margin between the bullet and the content. Default is 10.
 * `[:list][:placeholder][:too_large]`: If the list content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[list content too large]'.
+* `[:image][:loader]`: A callable that accepts the `src` attribute as an argument an returns a value understood by Prawn's `image` method. Loads `http(s)` URLs and base64 encoded data URIs by default.
 * `[:image][:placeholder]`: If an image is not supported, this text/callable is rendered instead. Defaults to '[unsupported image]'.
 * `[:iframe][:placeholder]`: If the HTML contains IFrames, this text/callable is rendered instead.
 A callable gets the URL of the IFrame as an argument. Defaults to ignore iframes.
@@ -81,7 +82,7 @@ This gem parses the given HTML and layouts the following elements in a vertical 
 
 All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`.
 
-Images must be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
+If no explicit loader is given (see above), images are loaded from `http(s)` addresses are may be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
 
 
 ## Development

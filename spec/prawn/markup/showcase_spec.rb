@@ -7,9 +7,9 @@ RSpec.describe 'Showcase' do
   it 'renders showcase' do
     html = File.read('spec/fixtures/showcase.html')
     doc.markup_options = {
-      heading1: { margin_top: 30, margin_bottom: 5 },
-      heading2: { margin_top: 24, margin_bottom: 4 },
-      heading3: { margin_top: 20, margin_bottom: 3 },
+      heading1: { margin_top: 30, margin_bottom: 15 },
+      heading2: { margin_top: 24, margin_bottom: 10 },
+      heading3: { margin_top: 20, margin_bottom: 5 },
       table: {
         header: { background_color: 'DDDDDD', style: :italic }
       },

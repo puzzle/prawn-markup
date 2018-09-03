@@ -38,7 +38,7 @@ RSpec.describe Prawn::Markup::Processor::Headings do
       processor.parse('<h1>hello</h1><h2>world</h2><p>bla</p><h5>earthlings</h5><div>blu</div><h2>universe</h2><p>bli</p>')
       expect(text.strings).to eq(%w[hello world bla earthlings blu universe bli])
       # values copied from visually controlled run
-      expect(top_positions).to eq([720, 666, 646, 620, 605, 562, 542])
+      expect(top_positions).to eq([720, 666, 641, 620, 605, 562, 537])
     end
   end
 
