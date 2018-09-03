@@ -32,7 +32,7 @@ module Prawn
         # parse width in the current context
         img[:width] = SizeConverter.new(pdf.bounds.width).parse(style_properties['width'])
         pdf.image(img.delete(:image), img)
-        pdf.move_down(text_margin_bottom)
+        put_bottom_margin(text_margin_bottom)
       end
 
       def image_properties(data)

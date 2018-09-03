@@ -84,6 +84,7 @@ module Prawn
 
       def add_table(cells)
         Builders::TableBuilder.new(pdf, cells, pdf.bounds.width, options).draw
+        put_bottom_margin(text_margin_bottom)
       rescue Prawn::Errors::CannotFit => e
         append_text(table_too_large_placeholder(e))
       end

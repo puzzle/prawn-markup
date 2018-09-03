@@ -82,6 +82,7 @@ module Prawn
 
       def add_list(list)
         Builders::ListBuilder.new(pdf, list, pdf.bounds.width, options).draw
+        put_bottom_margin(text_margin_bottom)
       rescue Prawn::Errors::CannotFit => e
         append_text(list_too_large_placeholder(e))
       end

@@ -24,10 +24,6 @@ module Prawn
           end
         end
 
-        def text_margin_bottom
-          text_options[:margin_bottom]
-        end
-
         def text_options
           (options[:text] || {})
         end

@@ -21,7 +21,6 @@ module Prawn
 
         def draw
           make.draw
-          pdf.move_down(text_margin_bottom)
         rescue Prawn::Errors::CannotFit => e
           if failover_on_error
             draw

@@ -23,7 +23,6 @@ module Prawn
 
         def draw
           make(true).draw
-          pdf.move_down(text_margin_bottom)
         end
 
         private

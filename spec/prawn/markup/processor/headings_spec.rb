@@ -9,7 +9,7 @@ RSpec.describe Prawn::Markup::Processor::Headings do
     processor.parse('<h1>hello</h1><h2>world</h2><p>bla</p><h3>earthlings</h3><div>blu</div><h2>universe</h2><p>bli</p>')
     expect(text.strings).to eq(%w[hello world bla earthlings blu universe bli])
     # values copied from visually controlled run
-    expect(top_positions).to eq([737, 708, 688, 668, 650, 628, 609])
+    expect(top_positions).to eq([737, 708, 688, 663, 645, 623, 603])
   end
 
   it 'inline formatting in headings' do
@@ -29,7 +29,7 @@ RSpec.describe Prawn::Markup::Processor::Headings do
   context 'with options' do
     let(:options) do
       {
-        heading1: { size: 36, style: :bold, margin_bottom: 5 },
+        heading1: { size: 36, style: :bold, margin_top: 10, margin_bottom: 5 },
         heading2: { size: 24, style: :bold_italic, margin_top: 20, margin_bottom: 5 }
       }
     end
@@ -38,7 +38,7 @@ RSpec.describe Prawn::Markup::Processor::Headings do
       processor.parse('<h1>hello</h1><h2>world</h2><p>bla</p><h5>earthlings</h5><div>blu</div><h2>universe</h2><p>bli</p>')
       expect(text.strings).to eq(%w[hello world bla earthlings blu universe bli])
       # values copied from visually controlled run
-      expect(top_positions).to eq([730, 671, 646, 630, 615, 572, 547])
+      expect(top_positions).to eq([720, 666, 646, 620, 605, 562, 542])
     end
   end
 

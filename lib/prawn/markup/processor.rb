@@ -71,7 +71,7 @@ module Prawn
 
       private
 
-      attr_reader :pdf, :stack, :text_buffer, :options
+      attr_reader :pdf, :stack, :text_buffer, :bottom_margin, :options
 
       def reset
         @stack = []
@@ -90,6 +90,10 @@ module Prawn
         text = process_text(text_buffer.dup)
         text_buffer.clear
         text
+      end
+
+      def put_bottom_margin(value)
+        @bottom_margin = value
       end
 
       def inside_container?

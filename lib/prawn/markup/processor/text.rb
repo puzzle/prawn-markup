@@ -61,7 +61,8 @@ module Prawn
       def start_hr
         return if inside_container?
 
-        add_current_text(false)
+        put_bottom_margin(nil)
+        add_current_text
         pdf.move_down(hr_vertical_margin_top)
         pdf.stroke_horizontal_rule
         pdf.move_down(hr_vertical_margin_bottom)
@@ -89,14 +90,14 @@ module Prawn
         text = dump_text
         text.gsub!(/[^\n]/, '') if text.strip.empty?
         unless text.empty?
-          add_paragraph_margin(true)
+          add_bottom_margin
           add_formatted_text(text, text_options)
-          @after_paragraph = true
+          put_bottom_margin(text_margin_bottom)
         end
       end
 
-      def add_current_text(margin = true, options = text_options)
-        add_paragraph_margin(margin)
+      def add_current_text(options = text_options)
+        add_bottom_margin
         return unless buffered_text?
 
         string = dump_text
@@ -104,10 +105,10 @@ module Prawn
         add_formatted_text(string, options)
       end
 
-      def add_paragraph_margin(margin)
-        if @after_paragraph
-          pdf.move_down(text_margin_bottom) if margin
-          @after_paragraph = false
+      def add_bottom_margin
+        if @bottom_margin
+          pdf.move_down(@bottom_margin)
+          @bottom_margin = nil
         end
       end
 
