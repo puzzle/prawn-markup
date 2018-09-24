@@ -82,7 +82,7 @@ This gem parses the given HTML and layouts the following elements in a vertical 
 
 All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`.
 
-If no explicit loader is given (see above), images are loaded from `http(s)` addresses are may be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
+If no explicit loader is given (see above), images are loaded from `http(s)` addresses or may be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
 
 
 ## Development
