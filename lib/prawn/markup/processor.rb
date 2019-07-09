@@ -41,6 +41,7 @@ module Prawn
 
       def parse(html)
         return if html.to_s.strip.empty?
+
         reset
         html = Prawn::Markup::Normalizer.new(html).normalize
         Nokogiri::HTML::SAX::Parser.new(self).parse(html) { |ctx| ctx.recovery = true }

@@ -170,6 +170,7 @@ module Prawn
         def distribute_remaing_width(count)
           equal_width = (total_width - column_width_sum) / count.to_f
           return if equal_width < 0
+
           column_widths.map! { |width| width || equal_width }
         end
 

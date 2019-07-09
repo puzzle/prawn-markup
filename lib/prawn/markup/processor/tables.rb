@@ -73,6 +73,7 @@ module Prawn
 
       def add_cell_text_node(cell, options = {})
         return unless buffered_text?
+
         cell.nodes << options.merge(content: dump_text.strip)
       end
 

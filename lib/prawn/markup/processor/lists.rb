@@ -33,11 +33,13 @@ module Prawn
 
       def start_li
         return unless inside_container?
+
         current_list.items << Elements::Item.new
       end
 
       def end_li
         return unless inside_container?
+
         add_cell_text_node(current_list_item)
       end
 
