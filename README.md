@@ -74,8 +74,8 @@ A callable gets the URL of the IFrame as an argument. Defaults to ignore iframes
 
 This gem parses the given HTML and layouts the following elements in a vertical order:
 
-* Text content: `p`, `div`, `ol`, `ul`, `li`, `hr`
-* Text semantics: `b`, `strong`, `i`, `em`, `u`, `a`, `br`
+* Text blocks: `p`, `div`, `ol`, `ul`, `li`, `hr`, `br`
+* Text semantics: `a`, `b`, `strong`, `i`, `em`, `u`, `s`, `del`, `sub`, `sup`
 * Headings: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
 * Tables: `table`, `tr`, `td`, `th`
 * Media: `img`, `iframe`
