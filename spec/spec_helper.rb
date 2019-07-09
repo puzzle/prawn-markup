@@ -5,6 +5,9 @@ SimpleCov.coverage_dir 'spec/coverage'
 require 'bundler/setup'
 require 'prawn/markup'
 
+require 'logger'
+Prawn::Markup::Processor.logger = Logger.new(STDOUT)
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'

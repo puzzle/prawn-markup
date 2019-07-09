@@ -67,6 +67,42 @@ RSpec.describe Prawn::Markup::Processor::Tables do
             ].map(&:round))
   end
 
+  # See https://bugzilla.gnome.org/show_bug.cgi?id=759987
+  it 'creates a large nested list with direct children sublists (invalid html)' do
+    processor.parse(
+      '<p>hello</p><ul><li>first</li><li>second</li>' \
+      '<ol><li>sub 1</li><li>sub 2 has a lot of text spaning more than two lines at least' \
+      'or probably even some more and then we go on and on and on and on</li><li>sub 3</li></ol>' \
+      '<li>third has a lot of text spaning more than two lines at least' \
+      'or probably even some more and then we go on and on and on and on</li></ul>world'
+    )
+
+    ol_desc_left = left + bullet_margin + ordinal_width + content_margin
+    expect(left_positions)
+      .to eq([left,
+              bullet_left, desc_left,
+              bullet_left, desc_left,
+              bullet_left, ol_desc_left,
+              bullet_left, ol_desc_left, ol_desc_left,
+              bullet_left, ol_desc_left,
+              left,
+              left].map(&:round))
+
+    ltop = list_top - p_gap
+    second_ltop = ltop - 2 * line - 2 * list_vertical_margin - leading - p_gap
+    expect(top_positions)
+      .to eq([top,
+              ltop, ltop,
+              ltop - line, ltop - line,
+              second_ltop, second_ltop,
+              second_ltop - line, second_ltop - line,
+              second_ltop - 2 * line,
+              second_ltop - 3 * line, second_ltop - 3 * line,
+              second_ltop - 4 * line - list_vertical_margin - leading - line_gap,
+              second_ltop - 5 * line - list_vertical_margin - leading - line_gap,
+            ].map(&:round))
+  end
+
   it 'creates nested list with image' do
     processor.parse(
       '<p>hello</p><ul><li>first</li><li>second' \
@@ -106,6 +142,12 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     processor.parse('<ol><li></li></ol>')
 
     expect(text.strings).to eq(['1.'])
+  end
+
+  it 'renders nothing for items without list' do
+    processor.parse('<li>Hello</li>rest')
+
+    expect(text.strings).to eq(['Hellorest'])
   end
 
   context 'with options' do

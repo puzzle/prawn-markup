@@ -62,11 +62,11 @@ module Prawn
       end
 
       def error(string)
-        logger.debug('SAX parsing error: ' + string) if logger
+        logger.info('SAX parsing error: ' + string.strip) if logger
       end
 
       def warning(string)
-        logger.warn(string) if logger
+        logger.info('SAX parsing warning: ' + string.strip) if logger
       end
 
       private

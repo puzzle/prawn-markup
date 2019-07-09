@@ -22,7 +22,7 @@ module Prawn
         close_self_closing_elements
         normalize_spaces
         replace_html_entities
-        "<root>#{html}</root>"
+        "<body>#{html}</body>"
       end
 
       private
@@ -43,6 +43,7 @@ module Prawn
           html.gsub!(/&#{entity};/, string)
         end
       end
+
     end
   end
 end
