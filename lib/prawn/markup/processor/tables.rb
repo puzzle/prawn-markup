@@ -26,19 +26,29 @@ module Prawn
       end
 
       def start_tr
+        return unless current_table
+
         current_table << []
       end
 
       def start_td
+        return unless current_table
+
         current_table.last << Elements::Cell.new(width: style_properties['width'])
       end
 
       def start_th
+        return unless current_table
+
         current_table.last << Elements::Cell.new(width: style_properties['width'], header: true)
       end
 
       def end_td
-        add_cell_text_node(current_cell)
+        if current_table
+          add_cell_text_node(current_cell)
+        else
+          add_current_text
+        end
       end
       alias end_th end_td
 

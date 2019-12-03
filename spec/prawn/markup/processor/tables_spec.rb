@@ -265,6 +265,20 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(PDF::Inspector::Graphics::Line.analyze(pdf).points.size).to eq(16)
   end
 
+  it 'renders plain text for trs without table tag' do
+    processor.parse('<tr><td>Hello</td></tr>')
+
+    expect(text.strings).to eq(['Hello'])
+    expect(PDF::Inspector::Graphics::Line.analyze(pdf).points.size).to eq(0)
+  end
+
+  it 'renders plain text for tds without table tag' do
+    processor.parse('<td>Hello</td>')
+
+    expect(text.strings).to eq(['Hello'])
+    expect(PDF::Inspector::Graphics::Line.analyze(pdf).points.size).to eq(0)
+  end
+
   context 'options' do
     context 'for text' do
       let(:leading) { 5 }
