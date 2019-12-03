@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Prawn
   module Markup
     module Builders
       class ListBuilder < NestableBuilder
-        BULLET_CHAR = '•'.freeze
+        BULLET_CHAR = '•'
         BULLET_MARGIN = 10
         CONTENT_MARGIN = 10
         VERTICAL_MARGIN = 5

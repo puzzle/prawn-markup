@@ -62,3 +62,7 @@ Layout/EmptyLinesAroundModuleBody:
 # We think that's the developers choice
 Style/GuardClause:
   Enabled: false
+
+# Backwards compatibility
+Style/SafeNavigation:
+  Enabled: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Prawn
   module Markup
     # Processes known HTML tags. Unknown tags are ignored.
@@ -78,7 +80,7 @@ module Prawn
 
       def reset
         @stack = []
-        @text_buffer = ''
+        @text_buffer = +''
       end
 
       def append_text(string)

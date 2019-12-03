@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'prawn'
 require 'prawn/measurement_extensions'
 require 'prawn/table'
