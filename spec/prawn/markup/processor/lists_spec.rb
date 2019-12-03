@@ -67,6 +67,19 @@ RSpec.describe Prawn::Markup::Processor::Tables do
             ].map(&:round))
   end
 
+  it 'creates a huge nested list' do
+    processor.parse(
+      '<ol>' +
+        ( '<li>' +
+          ('Lorem ipsum ' * 20) +
+          '<ul>' +
+            ('<li>' + ('dolor sit amet ' * 20) + '</li>') * 3  +
+          '</ul></li>' ) * 10 +
+      '</ol>'
+    )
+    expect(text.strings.size).to eq(200) # many, not just placeholder
+  end
+
   # See https://bugzilla.gnome.org/show_bug.cgi?id=759987
   it 'creates a large nested list with direct children sublists (invalid html)' do
     processor.parse(
