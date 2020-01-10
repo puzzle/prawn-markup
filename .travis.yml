@@ -1,17 +1,11 @@
-sudo: false
-
 language: ruby
 
 rvm:
-  - 2.5.1
+  - 2.5.7
 
 env:
   global:
     - CC_TEST_REPORTER_ID=d70fe39ffb8f2f7c5f837f0133d10a3a1c6784d0dd189153111577b60f74c603
-
-before_install:
-  - gem update --system
-  - gem install bundler
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
