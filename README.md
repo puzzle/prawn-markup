@@ -46,9 +46,9 @@ doc.markup_options = {
 doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>', text: { align: :center })
 ```
 
-Options may be set for `text`, `table` (`cell` and `header`) and `list` (`content` and `bullet`).
+Options may be set for `text`, `heading[1-6]`, `table` (subkeys `cell` and `header`) and `list` (subkeys `content` and `bullet`).
 
-Text options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`.
+Text and heading options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`.
 
 Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/prawn-table) and have the following additional options: `padding`, `borders`, `border_width`, `border_color`, `background_color`, `border_lines`, `rotate`, `overflow`, `min_font_size`. Options from `text` may be overridden.
 
@@ -84,6 +84,9 @@ All other elements are ignored, their content is added to the parent element. Wi
 
 If no explicit loader is given (see above), images are loaded from `http(s)` addresses or may be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
 
+## Example
+
+Have a look at [showcase.html](spec/fixtures/showcase.html), which is rendered by the corresponding [spec](spec/prawn/markup/showcase_spec.rb). Uncomment the `lookatit` call there to directly open the generated PDF when running the spec with `spec spec/prawn/markup/showcase_spec.rb`.
 
 ## Development
 
