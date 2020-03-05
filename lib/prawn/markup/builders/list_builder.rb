@@ -24,7 +24,10 @@ module Prawn
         end
 
         def draw
-          make(true).draw
+          # fix https://github.com/prawnpdf/prawn-table/issues/120
+          pdf.font_size(column_cell_style(:content)[:size] || pdf.font_size) do
+            make(true).draw
+          end
         end
 
         private

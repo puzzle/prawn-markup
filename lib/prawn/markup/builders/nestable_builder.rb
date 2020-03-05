@@ -49,10 +49,12 @@ module Prawn
         def extract_text_cell_style(hash)
           TEXT_STYLE_OPTIONS
             .each_with_object({}) { |key, h| h[key] = hash[key] }
-            .tap do |options|
-            options[:font_style] ||= options.delete(:style)
-            options[:text_color] ||= options.delete(:color)
-          end
+            .tap { |options| convert_style_options(options) }
+        end
+
+        def convert_style_options(hash)
+          hash[:font_style] ||= hash.delete(:style)
+          hash[:text_color] ||= hash.delete(:color)
         end
 
         def type_key(object)

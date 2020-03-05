@@ -15,10 +15,6 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Severity: error
 
-Metrics/LineLength:
-  Max: 100
-  Severity: error
-
 Metrics/MethodLength:
   Max: 10
   Severity: error
@@ -31,21 +27,9 @@ Metrics/ParameterLists:
   Max: 4
   Severity: warning
 
-# Keep for now, easier with superclass definitions
-ClassAndModuleChildren:
-  Enabled: false
-
-# The ones we use must exist for the entire class hierarchy.
-ClassVars:
-  Enabled: false
-
-# Well, well, well
-Documentation:
-  Enabled: false
-
-# Keep single line bodys for if and unless
-IfUnlessModifier:
-  Enabled: false
+Layout/LineLength:
+  Max: 100
+  Severity: error
 
 # We thinks that's fine for specs
 Layout/EmptyLinesAroundBlockBody:
@@ -57,6 +41,22 @@ Layout/EmptyLinesAroundClassBody:
 
 # We thinks that's fine
 Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+# Keep for now, easier with superclass definitions
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# The ones we use must exist for the entire class hierarchy.
+Style/ClassVars:
+  Enabled: false
+
+# Well, well, well
+Style/Documentation:
+  Enabled: false
+
+# Keep single line bodys for if and unless
+Style/IfUnlessModifier:
   Enabled: false
 
 # We think that's the developers choice

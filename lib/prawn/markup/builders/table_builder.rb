@@ -22,7 +22,10 @@ module Prawn
         end
 
         def draw
-          make.draw
+          # fix https://github.com/prawnpdf/prawn-table/issues/120
+          pdf.font_size(table_options[:cell][:size] || pdf.font_size) do
+            make.draw
+          end
         rescue Prawn::Errors::CannotFit => e
           if failover_on_error
             draw
@@ -231,11 +234,6 @@ module Prawn
         def build_header_options(opts)
           HashMerger.enhance(opts, :header, opts[:cell])
           convert_style_options(opts[:header])
-        end
-
-        def convert_style_options(hash)
-          hash[:font_style] ||= hash.delete(:style)
-          hash[:text_color] ||= hash.delete(:color)
         end
 
         def default_table_options

@@ -96,14 +96,23 @@ module Prawn
       end
 
       def add_table(cells)
-        Builders::TableBuilder.new(pdf, cells, pdf.bounds.width, options).draw
-        put_bottom_margin(text_margin_bottom)
+        draw_table(cells)
+        put_bottom_margin(text_margin_bottom + additional_cell_padding_top + text_leading)
       rescue Prawn::Errors::CannotFit => e
         append_text(table_too_large_placeholder(e))
       end
 
+      def draw_table(cells)
+        Builders::TableBuilder.new(pdf, cells, pdf.bounds.width, options).draw
+      end
+
       def table_too_large_placeholder(error)
         placeholder_value(%i[table placeholder too_large], error) || '[table content too large]'
+      end
+
+      def additional_cell_padding_top
+        # as used in Prawn::Table::Cell::Text#draw_content move_down
+        (text_line_gap + text_descender) / 2
       end
     end
   end

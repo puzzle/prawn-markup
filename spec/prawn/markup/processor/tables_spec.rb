@@ -5,8 +5,8 @@ RSpec.describe Prawn::Markup::Processor::Tables do
   include_context 'pdf_helpers'
 
   let(:first_col_left) { left + table_padding }
-  let(:first_row_top) { top - table_padding - 2 }
-  let(:second_row_top) { first_row_top - line - 2 * table_padding - 1 }
+  let(:first_row_top) { top - table_padding - additional_cell_padding_top }
+  let(:second_row_top) { first_row_top - line - 2 * table_padding }
 
   it 'creates a simple table' do
     processor.parse('<table><tr><td>hello</td><td>world</td></tr></table>')
@@ -15,9 +15,13 @@ RSpec.describe Prawn::Markup::Processor::Tables do
   end
 
   it 'creates a simple table with tbody and thead' do
-    processor.parse('<table><thead></thead><tbody><tr><td>hello</td><td>world</td></tr></tbody></table>')
-    expect(text.strings).to eq(%w[hello world])
-    expect(left_positions).to eq([first_col_left, 310])
+    processor.parse('<p>before table</p><table><thead></thead><tbody><tr><td>hello</td><td>world</td></tr></tbody></table><p>after table</p>')
+    expect(text.strings).to eq(['before table', 'hello', 'world', 'after table'])
+    expect(left_positions).to eq([left, first_col_left, 310, left])
+    row_top = first_row_top - line - p_gap
+    expect(top_positions)
+      .to eq([top, row_top, row_top,
+              row_top - line - table_padding - p_gap].map(&:round))
   end
 
   it 'creates a table with header' do
@@ -66,11 +70,11 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       .to eq([first_col_left, first_col_left, first_col_left, first_col_left, 342, 342])
     expect(top_positions)
       .to eq([first_row_top,
-              first_row_top - line - 1,
-              first_row_top - 3 * line - 1,
-              first_row_top - 5 * line - 1,
+              first_row_top - line,
+              first_row_top - 3 * line,
+              first_row_top - 5 * line,
               first_row_top,
-              first_row_top - 4 * line - 1].map(&:round))
+              first_row_top - 4 * line].map(&:round))
   end
 
   it 'creates divs inside tables' do
@@ -82,10 +86,10 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       .to eq([first_col_left, first_col_left, first_col_left, first_col_left, first_col_left, 368])
     expect(top_positions)
       .to eq([first_row_top,
-              first_row_top - 1 * line - 1,
-              first_row_top - 2 * line - 1,
-              first_row_top - 3 * line - 1,
-              first_row_top - 4 * line - 1,
+              first_row_top - 1 * line,
+              first_row_top - 2 * line,
+              first_row_top - 3 * line,
+              first_row_top - 4 * line,
               first_row_top].map(&:round))
   end
 
@@ -281,9 +285,12 @@ RSpec.describe Prawn::Markup::Processor::Tables do
 
   context 'options' do
     context 'for text' do
-      let(:leading) { 5 }
+      let(:leading) { 15 }
       let(:font_size) { 15 }
-      let(:options) { { text: { size: font_size, style: :bold, leading: leading } } }
+      let(:additional_cell_padding_top) do
+        doc.font_size(font_size) { return p_gap / 2 }
+      end
+      let(:options) { { text: { size: font_size, style: :bold, leading: leading, margin_bottom: 0 } } }
 
       it 'are used in cells and headers' do
         processor.parse('<table><tr><th>Col One</th><th>Col Two</th></tr>' \
@@ -293,28 +300,53 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       end
 
       it 'adds some vertical spacing after table' do
-        processor.parse('<table><tr><td>hello</td><td>world</td></tr></table><p>more here</p>')
-        expect(text.strings).to eq(['hello', 'world', 'more here'])
-        expect(left_positions).to eq([first_col_left, 310, left])
-        # fix off by ones
-        expect(top_positions).to eq([first_row_top - 1, first_row_top - 1,
-                                     first_row_top - 1 - line - table_padding - p_gap].map(&:round))
+        processor.parse('<p>before table</p><table><tr><td>hello</td><td>world</td></tr></table><p>more here</p>')
+        expect(text.strings).to eq(['before table', 'hello', 'world', 'more here'])
+        expect(left_positions).to eq([left, first_col_left, 310, left])
+        row_top = top - line - table_padding - additional_cell_padding_top - 1 # border width
+        expect(top_positions).to eq([
+          top,
+          row_top, row_top,
+          row_top - line - table_padding
+        ].map(&:round))
       end
     end
 
     context 'for cells' do
+      let(:font_size) { 40 }
+      let(:leading) { 10 }
+      let(:table_padding) { 2 }
       let(:options) do
         {
-          text: { size: 15, style: :bold },
-          table: { cell: { font: 'Courier', size: 14, text_color: 'FF0000', border_width: 1, padding: 2 } }
+          text: { size: font_size, style: :bold, leading: leading },
+          table: { cell: { font: 'Courier', size: 14, text_color: 'FF0000', border_width: 1, padding: table_padding } }
         }
+      end
+      let(:additional_cell_padding_top) do
+        doc.font('Courier', size: 14) { return (doc.font.descender + doc.font.line_gap) / 2 }
+      end
+      let(:cell_line) do
+        doc.font('Courier', size: 14) { return doc.font.height_at(14) }
       end
 
       it 'are used in cells and headers' do
-        processor.parse('<table><tr><th>Col One</th><th>Col Two</th></tr>' \
-                        '<tr><td>hello</td><td>world</td></tr></table>')
-        expect(text.strings).to eq(['Col One', 'Col Two', 'hello', 'world'])
-        expect(text.font_settings).to eq([{ name: :'Courier-Bold', size: 14 }] * 4)
+        processor.parse('<p>before</p><table><tr><th>Col One</th><th>Col Two</th></tr>' \
+                        '<tr><td>hello</td><td>world</td></tr></table><p>after</p>')
+        # lookatit
+        expect(text.strings).to eq(['before', 'Col One', 'Col Two', 'hello', 'world', 'after'])
+        expect(text.font_settings).to eq(
+          [{ name: :'Helvetica-Bold', size: 40 }] +
+          [{ name: :'Courier-Bold', size: 14 }] * 4 +
+          [{ name: :'Helvetica-Bold', size: 40 }]
+        )
+        row_top = top - line - p_gap - table_padding - additional_cell_padding_top + 7 # mixed font sizes
+        second_row_top = row_top - cell_line - 2 * table_padding
+        expect(top_positions).to eq([
+          top,
+          row_top, row_top,
+          second_row_top, second_row_top,
+          second_row_top - cell_line - table_padding - additional_cell_padding_top - p_gap - 2 * leading - 24 # mixed font sizes
+        ].map(&:round))
       end
     end
 

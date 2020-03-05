@@ -6,7 +6,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
 
   let(:bullet_left) { left + bullet_margin + bullet_padding }
   let(:desc_left) { left + bullet_margin + bullet_width + content_margin }
-  let(:list_top) { top - line - list_vertical_margin - line_gap }
+  let(:list_top) { top - line - list_vertical_margin }
 
   it 'creates an unordered list' do
     processor.parse('hello<ul><li>first</li><li>second</li><li>third</li></ul>world')
@@ -16,7 +16,7 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                                  list_top, list_top,
                                  list_top - line, list_top - line,
                                  list_top - 2 * line, list_top - 2 * line,
-                                 list_top - 3 * line - list_vertical_margin - line_gap - leading].map(&:round))
+                                 list_top - 3 * line - list_vertical_margin - leading - p_gap].map(&:round))
   end
 
   it 'creates an ordered list' do
@@ -24,11 +24,11 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(text.strings).to eq(['1.', 'first', '2.', 'second', '3.', 'third', 'world'])
     desc_left = left + bullet_margin + ordinal_width + content_margin
     expect(left_positions).to eq([bullet_left, desc_left].map(&:round) * 3 + [left])
-    list_top = top - list_vertical_margin - line_gap
+    list_top = top - list_vertical_margin
     expect(top_positions).to eq([list_top, list_top,
                                  list_top - line, list_top - line,
                                  list_top - 2 * line, list_top - 2 * line,
-                                 list_top - 3 * line - list_vertical_margin - line_gap - leading].map(&:round))
+                                 list_top - 3 * line - list_vertical_margin - p_gap - leading].map(&:round))
   end
 
   it 'creates a large nested list' do
@@ -61,9 +61,9 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               sub_list_top - line, sub_list_top - line,
               sub_list_top - 2 * line,
               sub_list_top - 3 * line, sub_list_top - 3 * line,
-              sub_list_top - 4 * line - 1, sub_list_top - 4 * line - 1, # fix off by one
+              sub_list_top - 4 * line, sub_list_top - 4 * line,
               sub_list_top - 5 * line,
-              sub_list_top - 6 * line - list_vertical_margin - leading - line_gap
+              sub_list_top - 6 * line - list_vertical_margin - leading - p_gap
             ].map(&:round))
   end
 
@@ -111,8 +111,8 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               second_ltop - line, second_ltop - line,
               second_ltop - 2 * line,
               second_ltop - 3 * line, second_ltop - 3 * line,
-              second_ltop - 4 * line - list_vertical_margin - leading - line_gap,
-              second_ltop - 5 * line - list_vertical_margin - leading - line_gap,
+              second_ltop - 4 * line - list_vertical_margin - leading - p_gap,
+              second_ltop - 5 * line - list_vertical_margin - leading - p_gap,
             ].map(&:round))
   end
 
@@ -140,9 +140,9 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               sub_list_top, sub_list_top,
               sub_list_top - line,
               sub_list_top - 2 * line - image_height, sub_list_top - 2 * line - image_height,
-              sub_list_top - 3 * line - image_height + 1, sub_list_top - 3 * line - image_height + 1, # fix off by one
+              sub_list_top - 3 * line - image_height, sub_list_top - 3 * line - image_height,
               sub_list_top - 4 * line - image_height,
-              sub_list_top - 5 * line - image_height - list_vertical_margin - leading - line_gap].map(&:round))
+              sub_list_top - 5 * line - image_height - list_vertical_margin - leading - p_gap].map(&:round))
   end
 
   it 'does nothing for empty list' do
@@ -166,23 +166,23 @@ RSpec.describe Prawn::Markup::Processor::Tables do
   context 'with options' do
     let(:font_size) { 10 }
     let(:leading) { 8 }
+    let(:list_vertical_margin) { 0 }
     let(:options) do
       {
-        text: { leading: leading, size: font_size },
-        list: { vertical_margin: 12, bullet: { char: '*' }, content: { margin: 20 } }
+        text: { leading: leading, size: font_size, margin_bottom: 0 },
+        list: { vertical_margin: list_vertical_margin,  bullet: { char: '*' }, content: { margin: 20 } }
       }
     end
 
     it 'creates an unordered list' do
-      processor.parse('hello<ul><li>first</li><li>second</li><li>third</li></ul>world')
+      processor.parse('<p>hello</p><ul><li>first</li><li>second</li></ul><ul><li>third</li></ul><p>world</p>')
       expect(text.strings).to eq(['hello', '*', 'first', '*', 'second', '*', 'third', 'world'])
       expect(left_positions).to eq([left] + [bullet_left, desc_left + 10].map(&:round) * 3 + [left])
-      ltop = list_top - 7
       expect(top_positions).to eq([top,
-                                   ltop, ltop,
-                                   ltop - line, ltop - line,
-                                   ltop - 2 * line, ltop - 2 * line,
-                                   ltop - 3 * line - list_vertical_margin - line_gap - leading - 7
+                                   list_top, list_top,
+                                   list_top - line, list_top - line,
+                                   list_top - 2 * line, list_top - 2 * line,
+                                   list_top - 3 * line - list_vertical_margin
                                   ].map(&:round))
     end
 
@@ -205,19 +205,19 @@ RSpec.describe Prawn::Markup::Processor::Tables do
                 sub_ordinal_left, sub_desc_left,
                 bullet_left, *([desc_left + 10] * 2),
                 left].map(&:round))
-      ltop = list_top - p_gap - leading - 7
-      sub_list_top = ltop + 1 - 2 * line
+      ltop = list_top
+      sub_list_top = ltop - 2 * line
       expect(top_positions)
         .to eq([top,
                 ltop, ltop,
-                ltop - line + 1, ltop - line + 1, # fix off by one
+                ltop - line, ltop - line,
                 sub_list_top, sub_list_top,
                 sub_list_top - line, sub_list_top - line,
                 sub_list_top - 2 * line,
-                sub_list_top - 3 * line - 1, sub_list_top - 3 * line - 1, # fix off by one
+                sub_list_top - 3 * line , sub_list_top - 3 * line ,
                 sub_list_top - 4 * line, sub_list_top - 4 * line,
-                sub_list_top - 5 * line - 1, # fix off by one
-                sub_list_top - 6 * line - list_vertical_margin - leading - line_gap - 7].map(&:round))
+                sub_list_top - 5 * line,
+                sub_list_top - 6 * line - list_vertical_margin].map(&:round))
     end
   end
 

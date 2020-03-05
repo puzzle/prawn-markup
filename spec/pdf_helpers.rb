@@ -12,8 +12,8 @@ RSpec.shared_context 'pdf_helpers' do
   let(:top) { content_top - font_size * 0.718 }
   let(:left) { 36 }
   let(:line) { font_size * 1.156 + leading }
-  let(:line_gap) { doc.font.descender }
-  let(:p_gap) { doc.font.descender + doc.font.line_gap }
+  let(:line_gap) { doc.font_size(font_size) { return doc.font.descender } }
+  let(:p_gap) { doc.font_size(font_size) { return doc.font.descender + doc.font.line_gap } }
   let(:content_width) { 540 }
   let(:table_padding) { Prawn::Markup::Builders::TableBuilder::DEFAULT_CELL_PADDING }
   let(:bullet_margin) { Prawn::Markup::Builders::ListBuilder::BULLET_MARGIN }
@@ -23,6 +23,7 @@ RSpec.shared_context 'pdf_helpers' do
   let(:bullet_width) { 4 }
   let(:ordinal_width) { 10 }
   let(:bullet_padding) { 1 }
+  let(:additional_cell_padding_top) { p_gap / 2 }
 
   let(:options) { {} }
   let(:doc) { Prawn::Document.new }

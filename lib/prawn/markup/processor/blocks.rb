@@ -125,11 +125,17 @@ module Prawn
       end
 
       def default_text_margin_bottom
-        with_font(text_options) do
-          pdf.font.line_gap +
-            pdf.font.descender +
-            text_leading
-        end
+        text_line_gap +
+          text_descender +
+          text_leading
+      end
+
+      def text_line_gap
+        @text_line_gap ||= with_font(text_options) { pdf.font.line_gap }
+      end
+
+      def text_descender
+        @text_descender ||= with_font(text_options) { pdf.font.descender }
       end
 
       def text_leading
