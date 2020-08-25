@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    prawn-markup (0.2.2)
+    prawn-markup (0.3.0)
       nokogiri
       prawn
       prawn-table

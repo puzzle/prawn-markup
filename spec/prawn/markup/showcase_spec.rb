@@ -6,6 +6,9 @@ RSpec.describe 'Showcase' do
 
   it 'renders showcase' do
     html = File.read('spec/fixtures/showcase.html')
+    doc.font_families.update('DejaVu' => {
+      normal: 'spec/fixtures/DejaVuSans.ttf'
+    })
     doc.markup_options = {
       heading1: { margin_top: 30, margin_bottom: 15 },
       heading2: { margin_top: 24, margin_bottom: 10, style: :italic },
@@ -15,7 +18,8 @@ RSpec.describe 'Showcase' do
       },
       iframe: {
         placeholder: ->(src) { "Embedded content: #{src}" }
-      }
+      },
+      input: { symbol_font: 'DejaVu', symbol_font_size: 16 }
     }
     doc.markup(html)
     # lookatit

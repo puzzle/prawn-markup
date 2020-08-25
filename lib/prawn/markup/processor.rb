@@ -26,6 +26,7 @@ module Prawn
       require 'prawn/markup/processor/blocks'
       require 'prawn/markup/processor/headings'
       require 'prawn/markup/processor/images'
+      require 'prawn/markup/processor/inputs'
       require 'prawn/markup/processor/tables'
       require 'prawn/markup/processor/lists'
 
@@ -33,6 +34,7 @@ module Prawn
       prepend Prawn::Markup::Processor::Blocks
       prepend Prawn::Markup::Processor::Headings
       prepend Prawn::Markup::Processor::Images
+      prepend Prawn::Markup::Processor::Inputs
       prepend Prawn::Markup::Processor::Tables
       prepend Prawn::Markup::Processor::Lists
 
@@ -128,7 +130,7 @@ module Prawn
       end
 
       def placeholder_value(keys, *args)
-        placeholder = dig_options(keys)
+        placeholder = dig_options(*keys)
         return if placeholder.nil?
 
         if placeholder.respond_to?(:call)
@@ -138,7 +140,7 @@ module Prawn
         end
       end
 
-      def dig_options(keys)
+      def dig_options(*keys)
         keys.inject(options) { |opts, key| opts ? opts[key] : nil }
       end
 
