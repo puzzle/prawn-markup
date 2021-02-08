@@ -66,7 +66,7 @@ GEM
     simplecov (0.18.5)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
-    simplecov-html (0.12.2)
+    simplecov-html (0.12.3)
     ttfunk (1.7.0)
     unicode-display_width (1.6.1)
 
