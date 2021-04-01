@@ -39,6 +39,7 @@ module Prawn
       prepend Prawn::Markup::Processor::Lists
 
       def initialize(pdf, options = {})
+        super()
         @pdf = pdf
         @options = options
       end
@@ -52,10 +53,8 @@ module Prawn
       end
 
       def start_element(name, attrs = [])
-        stack.push(name: name, attrs: Hash[attrs])
-        if self.class.known_elements.include?(name)
-          send("start_#{name}") if respond_to?("start_#{name}", true)
-        end
+        stack.push(name: name, attrs: attrs.to_h)
+        send("start_#{name}") if known_element?(name) && respond_to?("start_#{name}", true)
       end
 
       def end_element(name)
@@ -69,11 +68,11 @@ module Prawn
       end
 
       def error(string)
-        logger.info('SAX parsing error: ' + string.strip) if logger
+        logger.info("SAX parsing error: #{string.strip}") if logger
       end
 
       def warning(string)
-        logger.info('SAX parsing warning: ' + string.strip) if logger
+        logger.info("SAX parsing warning: #{string.strip}") if logger
       end
 
       private
@@ -83,6 +82,10 @@ module Prawn
       def reset
         @stack = []
         @text_buffer = +''
+      end
+
+      def known_element?(name)
+        self.class.known_elements.include?(name)
       end
 
       def append_text(string)
@@ -122,8 +125,7 @@ module Prawn
       def style_properties
         style = current_attrs['style']
         if style
-          tokens = style.split(';').map { |p| p.split(':', 2).map(&:strip) }
-          Hash[tokens]
+          style.split(';').map { |p| p.split(':', 2).map(&:strip) }.to_h
         else
           {}
         end

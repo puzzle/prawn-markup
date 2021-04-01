@@ -1,5 +1,7 @@
 AllCops:
   DisplayCopNames: true
+  NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - '*.gemspec'
     - spec/**/*
@@ -61,6 +63,10 @@ Style/IfUnlessModifier:
 
 # We think that's the developers choice
 Style/GuardClause:
+  Enabled: false
+
+# Backward compatibility
+Style/OptionalBooleanParameter:
   Enabled: false
 
 # Backwards compatibility
