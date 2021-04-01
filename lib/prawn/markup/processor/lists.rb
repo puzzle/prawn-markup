@@ -67,7 +67,9 @@ module Prawn
       end
 
       def current_list_item
-        current_list.items.last
+        items = current_list.items
+        items << Elements::Item.new if items.empty?
+        items.last
       end
 
       def inside_container?

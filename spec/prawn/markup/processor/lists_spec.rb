@@ -145,6 +145,12 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               sub_list_top - 5 * line - image_height - list_vertical_margin - leading - p_gap].map(&:round))
   end
 
+  it 'allows invalid nested list' do
+    processor.parse('<ul><ul><li>Bla</li></ul></ul>')
+
+    expect(text.strings).to eq(['•', '•', 'Bla'])
+  end
+
   it 'does nothing for empty list' do
     processor.parse('<ul></ul>')
 
