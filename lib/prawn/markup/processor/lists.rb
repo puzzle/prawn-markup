@@ -34,13 +34,13 @@ module Prawn
       alias end_ul end_list
 
       def start_li
-        return unless inside_container?
+        return unless current_list
 
         current_list.items << Elements::Item.new
       end
 
       def end_li
-        return unless inside_container?
+        return unless current_list
 
         add_cell_text_node(current_list_item)
       end
