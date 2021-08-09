@@ -70,7 +70,11 @@ module Prawn
 
       def load_remote_image(src)
         if src =~ %r{^https?:/}
-          URI.parse(src).open
+          begin
+            URI.parse(src).open
+          rescue OpenURI::HTTPError
+            nil
+          end
         end
       end
 

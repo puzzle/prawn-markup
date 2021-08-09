@@ -31,6 +31,11 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(top_positions).to eq([top, top - line - LOGO_DIMENSION.last - p_gap - 5].map(&:round))
   end
 
+  it 'renders not existing image for remote src' do
+    processor.parse('<p>hello</p><p><img src="https://example.org/not_existing.png"></p><p>world</p>')
+    expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
+  end
+
   it 'renders unsupported image for remote src' do
     processor.parse('<p>hello</p><p><img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"></p><p>world</p>')
     expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
