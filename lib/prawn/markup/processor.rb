@@ -116,7 +116,15 @@ module Prawn
 
       def process_text(text)
         if options[:text] && options[:text][:preprocessor]
-          options[:text][:preprocessor].call(text)
+          if options[:text][:preprocessor].arity == 3
+            options[:text][:preprocessor].call(
+              text,
+              stack.last ? stack.last[:name] : 'div',
+              stack.last ? stack.last[:attrs].symbolize_keys : {}
+            )
+          else
+            options[:text][:preprocessor].call(text)
+          end
         else
           text
         end
