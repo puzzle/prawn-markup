@@ -53,6 +53,4 @@ jobs:
       with:
         coverageCommand: bundle exec rake
         coverageLocations: |
-          ${{github.workspace}}/spec/coverage/coverage.json:simplecov        
-        debug: true
-
+          ${{github.workspace}}/spec/coverage/coverage.json:simplecov
