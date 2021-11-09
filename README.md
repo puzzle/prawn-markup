@@ -1,6 +1,6 @@
 # Prawn::Markup
 
-[![Build Status](https://travis-ci.org/puzzle/prawn-markup.svg?branch=master)](https://travis-ci.org/puzzle/prawn-markup)
+[![Build Status](https://github.com/puzzle/prawn-markup/actions/workflows/build.yml/badge.svg)](https://github.com/puzzle/prawn-markup/actions/workflows/build.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/maintainability)](https://codeclimate.com/github/puzzle/prawn-markup/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/test_coverage)](https://codeclimate.com/github/puzzle/prawn-markup/test_coverage)
 
