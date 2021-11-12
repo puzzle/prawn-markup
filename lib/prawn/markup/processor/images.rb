@@ -72,7 +72,7 @@ module Prawn
         if src =~ %r{^https?:/}
           begin
             URI.parse(src).open
-          rescue OpenURI::HTTPError
+          rescue OpenURI::HTTPError, SocketError
             nil
           end
         end

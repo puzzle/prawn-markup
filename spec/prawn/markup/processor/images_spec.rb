@@ -36,6 +36,11 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
   end
 
+  it 'renders not existing host for remote src' do
+    processor.parse('<p>hello</p><p><img src="https://dlawjdklwajdwakl.djwakldj/not_existing.png"></p><p>world</p>')
+    expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
+  end
+
   it 'renders unsupported image for remote src' do
     processor.parse('<p>hello</p><p><img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"></p><p>world</p>')
     expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
