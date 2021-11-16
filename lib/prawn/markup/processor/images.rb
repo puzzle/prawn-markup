@@ -12,8 +12,11 @@ module Prawn
       end
 
       def start_img
+        src = current_attrs['src']
+        return if src.to_s.strip.empty?
+
         add_current_text
-        add_image_or_placeholder(current_attrs['src'])
+        add_image_or_placeholder(src)
       end
 
       def start_iframe

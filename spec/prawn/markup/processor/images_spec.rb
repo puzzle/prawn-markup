@@ -46,6 +46,13 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(text.strings).to eq(['hello', '[unsupported image]', 'world'])
   end
 
+  it 'renders nothing for images without source' do
+    processor.parse('hello <img alt="nix"> world')
+
+    expect(text.strings).to eq(['hello  world'])
+    expect(top_positions).to eq([top].map(&:round))
+  end
+
   it 'renders nothing for iframes' do
     processor.parse('hello <iframe src="http://vimeo.com/42" /> world')
 
