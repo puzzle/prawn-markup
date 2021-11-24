@@ -116,6 +116,39 @@ RSpec.describe Prawn::Markup::Processor::Tables do
             ].map(&:round))
   end
 
+  it 'creates a nested list with inline html' do
+    processor.parse(<<~HTML
+      <ol>
+        <li><strong>All Bold</strong></li>
+        <li>
+          <strong>More</strong>
+          <ul>
+            <li><strong>more</strong></li>
+          </ul>
+        </li>
+        <li><strong>more</strong></li>
+        <li>
+          <strong>more</strong>
+          <ul>
+            <li>
+              <strong>more</strong>
+              <ol>
+                <li><strong>more</strong></li>
+              </ol>
+            </li>
+          </ul>
+        </li>
+      </ol>
+      HTML
+    )
+    expect(text.strings).to eq(['1.', 'All Bold', '2.', 'More', '•', 'more', '3.', 'more',
+                                '4.', 'more', '•', 'more', '1.', 'more'])
+    expect(text.font_settings.map { |h| h[:name] })
+      .to eq(%i[Helvetica Helvetica-Bold Helvetica Helvetica-Bold Helvetica Helvetica-Bold
+                Helvetica Helvetica-Bold Helvetica Helvetica-Bold Helvetica Helvetica-Bold
+                Helvetica Helvetica-Bold])
+  end
+
   it 'creates nested list with image' do
     processor.parse(
       '<p>hello</p><ul><li>first</li><li>second' \

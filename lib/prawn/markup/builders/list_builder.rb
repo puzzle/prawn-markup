@@ -69,7 +69,7 @@ module Prawn
         def list_item_table(item)
           data = item.nodes.map { |n| [normalize_list_item_node(n)] }
           style = column_cell_style(:content)
-                  .merge(borders: [], padding: [0, 0, padding_bottom, 0])
+                  .merge(borders: [], padding: [0, 0, padding_bottom, 0], inline_format: true)
           pdf.make_table(data, cell_style: style, column_widths: [content_width]) do
             rows(-1).padding = [0, 0, 0, 0]
           end
