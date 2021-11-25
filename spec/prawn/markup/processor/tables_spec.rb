@@ -239,6 +239,17 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(left_positions[0..2]).to eq([first_col_left, 329, 557].map(&:round))
   end
 
+  it 'percentual widths in nested tables cannot be processed without parent widths' do
+    processor.parse(
+      '<table><tr><td>Col One</td><td>' \
+      '<table><tr><td style="width: 33%;">half</td><td style="width: 66%;">half</td></tr></table>' \
+      '</td><td>Col Three</td></tr></table>'
+    )
+
+    expect(left_positions).to eq([first_col_left, 220, 249, 400].map(&:round))
+  end
+
+
   it 'renders placeholder if subtable cannot be fitted' do
     cell = "<td>#{'bla blablablabla bla blabla' * 10}</td>"
     html = "<table><tr>#{cell * 3}<td><table><tr>#{cell * 6}</tr></table></td>#{cell * 3}</tr></table>"
