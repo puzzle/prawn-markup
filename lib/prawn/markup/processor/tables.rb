@@ -90,8 +90,11 @@ module Prawn
       end
 
       def add_cell_image(cell)
+        src = current_attrs['src']
+        return if src.to_s.strip.empty?
+
         add_cell_text_node(cell)
-        img = image_properties(current_attrs['src'])
+        img = image_properties(src)
         cell.nodes << img || invalid_image_placeholder
       end
 
