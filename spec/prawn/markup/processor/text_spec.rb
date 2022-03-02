@@ -20,4 +20,8 @@ RSpec.describe Prawn::Markup::Processor::Text do
     expect(top_positions).to eq([top, top].map(&:round))
   end
 
+  it 'handles prawn tags' do
+    processor.parse('hello <color rgb="ff0000">world</color>')
+    expect(text.strings).to eq(['hello ', 'world'])
+  end  
 end

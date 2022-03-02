@@ -6,7 +6,7 @@ module Prawn
       def self.prepended(base)
         base.known_elements.push(
           'a', 'b', 'strong', 'i', 'em', 'u', 'strikethrough', 'strike', 's', 'del',
-          'sub', 'sup'
+          'sub', 'sup', 'color'
         )
       end
 
@@ -78,6 +78,13 @@ module Prawn
         append_text('</sup>')
       end
 
+      def start_color
+        append_text("<color rgb=\"#{current_attrs['rgb']}\">")
+      end
+
+      def end_color
+        append_text("</color>")
+      end
     end
   end
 end
