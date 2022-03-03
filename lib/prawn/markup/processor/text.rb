@@ -79,7 +79,13 @@ module Prawn
       end
 
       def start_color
-        append_text("<color rgb=\"#{current_attrs['rgb']}\">")
+        rgb, c, m, y, k = current_attrs.values_at('rgb', 'c', 'm', 'y', 'k')
+
+        if [c, m, y, k].all?
+          append_text("<color c=\"#{c}\" m=\"#{m}\" y=\"#{y}\" k=\"#{k}\">")
+        else 
+          append_text("<color rgb=\"#{rgb}\">")
+        end
       end
 
       def end_color
