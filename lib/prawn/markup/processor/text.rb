@@ -83,13 +83,13 @@ module Prawn
 
         if [c, m, y, k].all?
           append_text("<color c=\"#{c}\" m=\"#{m}\" y=\"#{y}\" k=\"#{k}\">")
-        else 
+        else
           append_text("<color rgb=\"#{rgb}\">")
         end
       end
 
       def end_color
-        append_text("</color>")
+        append_text('</color>')
       end
     end
   end
