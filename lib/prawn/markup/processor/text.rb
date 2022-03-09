@@ -6,7 +6,7 @@ module Prawn
       def self.prepended(base)
         base.known_elements.push(
           'a', 'b', 'strong', 'i', 'em', 'u', 'strikethrough', 'strike', 's', 'del',
-          'sub', 'sup'
+          'sub', 'sup', 'color'
         )
       end
 
@@ -78,6 +78,19 @@ module Prawn
         append_text('</sup>')
       end
 
+      def start_color
+        rgb, c, m, y, k = current_attrs.values_at('rgb', 'c', 'm', 'y', 'k')
+
+        if [c, m, y, k].all?
+          append_text("<color c=\"#{c}\" m=\"#{m}\" y=\"#{y}\" k=\"#{k}\">")
+        else
+          append_text("<color rgb=\"#{rgb}\">")
+        end
+      end
+
+      def end_color
+        append_text('</color>')
+      end
     end
   end
 end

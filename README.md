@@ -38,13 +38,13 @@ doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>')
 This gem parses the given HTML and layouts the following elements in a vertical order:
 
 * Text blocks: `p`, `div`, `ol`, `ul`, `li`, `hr`, `br`
-* Text semantics: `a`, `b`, `strong`, `i`, `em`, `u`, `s`, `del`, `sub`, `sup`
+* Text semantics: `a`, `b`, `strong`, `i`, `em`, `u`, `s`, `del`, `sub`, `sup`, `color`
 * Headings: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
 * Tables: `table`, `tr`, `td`, `th`
 * Media: `img`, `iframe`
 * Inputs: `type=checkbox`, `type=radio`
 
-All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`.
+All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`. Another exception is the `rgb` or `cmyk` properties of the Prawn-specific `color` tag.
 
 If no explicit loader is given (see above), images are loaded from `http(s)` addresses or may be contained in the `src` attribute as base64 encoded data URIs. Prawn only supports `PNG` and `JPG`.
 
