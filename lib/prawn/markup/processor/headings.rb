@@ -57,7 +57,7 @@ module Prawn
       def default_options_with_size(level)
         default = text_options.dup
         default[:size] ||= pdf.font_size
-        default[:size] *= 2.5 - level * 0.25
+        default[:size] *= 2.5 - (level * 0.25)
         HashMerger.deep(default, options[:"heading#{level}"] || {})
       end
 

@@ -98,7 +98,7 @@ module Prawn
         end
 
         def content_width
-          column_widths.last && column_widths.last - content_margin
+          column_widths.last && (column_widths.last - content_margin)
         end
 
         def compute_column_widths

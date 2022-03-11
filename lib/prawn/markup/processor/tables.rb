@@ -95,7 +95,7 @@ module Prawn
 
         add_cell_text_node(cell)
         img = image_properties(src)
-        cell.nodes << img || invalid_image_placeholder
+        (cell.nodes << img) || invalid_image_placeholder
       end
 
       def add_table(cells)

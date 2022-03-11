@@ -131,7 +131,7 @@ module Prawn
 
         def normalize_cell_hash(node, width, style_options)
           if width.nil? && total_width
-            width = total_width - column_width_sum - (columns_without_width - 1) * MIN_COL_WIDTH
+            width = total_width - column_width_sum - ((columns_without_width - 1) * MIN_COL_WIDTH)
           end
           super(node, width, style_options)
         end
@@ -190,13 +190,13 @@ module Prawn
 
         def increase_widths(sum)
           diff = total_width - sum
-          column_widths.map! { |w| w + w / sum * diff }
+          column_widths.map! { |w| w + (w / sum * diff) }
         end
 
         def decrease_widths(sum)
           sum += columns_without_width * MIN_COL_WIDTH
           diff = sum - total_width
-          column_widths.map! { |w| w ? [w - w / sum * diff, 0].max : nil }
+          column_widths.map! { |w| w ? [w - (w / sum * diff), 0].max : nil }
         end
 
         def failover_on_error
@@ -210,7 +210,7 @@ module Prawn
 
         def horizontal_padding
           @horizontal_padding ||= begin
-            padding = table_options[:cell][:padding] || [DEFAULT_CELL_PADDING] * 4
+            padding = table_options[:cell][:padding] || ([DEFAULT_CELL_PADDING] * 4)
             padding.is_a?(Array) ? padding[1] + padding[3] : padding
           end
         end
