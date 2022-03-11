@@ -39,6 +39,12 @@ RSpec.describe Prawn::Markup::Processor::Blocks do
     expect(top_positions).to eq([top, top - line].map(&:round))
   end
 
+  it 'creates new lines for consecutive line break tags between text and block tags' do
+    processor.parse('<i>hello</i><br/><br/><br/><p>world</p>')
+    expect(text.strings).to eq(%w[hello world])
+    expect(top_positions).to eq([top, top - (3 * line)].map(&:round))
+  end
+
   it 'creates new line between divs' do
     processor.parse('<div>hello</div><div>world</div>')
     expect(text.strings).to eq(%w[hello world])
