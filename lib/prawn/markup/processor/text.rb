@@ -6,7 +6,7 @@ module Prawn
       def self.prepended(base)
         base.known_elements.push(
           'a', 'b', 'strong', 'i', 'em', 'u', 'strikethrough', 'strike', 's', 'del',
-          'sub', 'sup', 'color'
+          'sub', 'sup', 'color', 'font'
         )
       end
 
@@ -90,6 +90,18 @@ module Prawn
 
       def end_color
         append_text('</color>')
+      end
+
+      def start_font
+        font_attrs = current_attrs
+                     .slice('size', 'name', 'character_spacing')
+                     .reduce('') { |acc, (key, val)| "#{acc} #{key}=\"#{val}\"" }
+
+        append_text("<font #{font_attrs}>")
+      end
+
+      def end_font
+        append_text('</font>')
       end
     end
   end
