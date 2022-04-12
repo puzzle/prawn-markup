@@ -29,4 +29,24 @@ RSpec.describe Prawn::Markup::Processor::Text do
     processor.parse('hello <color c="22" m="55" y="79" k="30">world</color>')
     expect(text.strings).to eq(['hello ', 'world'])
   end  
+
+  it 'handles prawn font name' do
+    processor.parse('hello <font name="Courier">world</font>')
+    expect(text.strings).to eq(['hello ', 'world'])
+  end
+
+  it 'handles prawn font size' do
+    processor.parse('hello <font size="20">world</font>')
+    expect(text.strings).to eq(['hello ', 'world'])
+  end
+
+  it 'handles prawn font character_spacing' do
+    processor.parse('hello <font character_spacing="20">world</font>')
+    expect(text.strings).to eq(['hello ', 'world'])
+  end
+
+  it 'handles prawn font multiple attributes' do
+    processor.parse('hello <font name="Courier" size="20">world</font>')
+    expect(text.strings).to eq(['hello ', 'world'])
+  end
 end
