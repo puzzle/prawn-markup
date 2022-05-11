@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    prawn-markup (0.3.5)
+    prawn-markup (0.3.6)
       nokogiri
       prawn
       prawn-table
@@ -16,9 +16,7 @@ GEM
     diff-lcs (1.5.0)
     docile (1.4.0)
     hashery (2.1.2)
-    mini_portile2 (2.8.0)
-    nokogiri (1.13.3)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.13.4-x86_64-linux)
       racc (~> 1.4)
     parallel (1.21.0)
     parser (3.1.1.0)
