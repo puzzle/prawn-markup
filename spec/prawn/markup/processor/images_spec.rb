@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'pdf_helpers'
 
-RSpec.describe Prawn::Markup::Processor::Tables do
+RSpec.describe Prawn::Markup::Processor::Images do
   include_context 'pdf_helpers'
 
   LOGO_DIMENSION = [100, 38].freeze

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'pdf_helpers'
 
-RSpec.describe Prawn::Markup::Processor::Tables do
+RSpec.describe Prawn::Markup::Processor::Lists do
   include_context 'pdf_helpers'
 
   let(:bullet_left) { left + bullet_margin + bullet_padding }
@@ -78,6 +78,13 @@ RSpec.describe Prawn::Markup::Processor::Tables do
       '</ol>'
     )
     expect(text.strings.size).to eq(200) # many, not just placeholder
+  end
+
+  # regression spec for https://github.com/puzzle/prawn-markup/issues/38
+  it 'creates longer list with correct bullet indent' do
+    processor.parse('<ol>' + ( '<li>Item</li>' * 11) + '</ol>')
+    ltop = top - list_vertical_margin
+    expect(top_positions).to eq(11.times.flat_map { |i| [(ltop - i * line).round] * 2 })
   end
 
   # See https://bugzilla.gnome.org/show_bug.cgi?id=759987
