@@ -112,11 +112,9 @@ module Prawn
         def bullet_text_width
           font = bullet_font
           font_size = column_cell_style(:bullet)[:size] || pdf.font_size
-          for idx in 0..list.items.size do
-            encoded = font.normalize_encoding(bullet(idx))
-            size_list << font.compute_width_of(encoded, size: font_size)
-          end
-          size_list.max
+          max_possible_length = list.ordered ? "#{"0" * list.items.size.to_s.size}." : (column_cell_style(:bullet)[:char] || BULLET_CHAR)
+          encoded = font.normalize_encoding(max_possible_length)
+          font.compute_width_of(encoded, size: font_size)
         end
 
         def bullet_font
