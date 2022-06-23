@@ -400,4 +400,11 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     end
   end
 
+  context 'with invalid style attribute' do
+    it 'parses the text and raises no error' do
+      processor.parse('<table><tr><td style="text-align: right; blorg">bananas are great</td></tr></table>')
+      expect(text.strings).to eq(['bananas are great'])
+    end
+  end
+
 end

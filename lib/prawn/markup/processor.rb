@@ -125,7 +125,11 @@ module Prawn
       def style_properties
         style = current_attrs['style']
         if style
-          style.split(';').map { |p| p.split(':', 2).map(&:strip) }.to_h
+          style
+            .split(';')
+            .map { |p| p.split(':', 2).map(&:strip) }
+            .select { |tuple| tuple.size == 2 }
+            .to_h
         else
           {}
         end
