@@ -24,7 +24,7 @@ RSpec.describe Prawn::Markup::Processor::Images do
   end
 
   it 'renders image for remote src' do
-    processor.parse('<p>hello</p><p><img src="https://github.com/puzzle/prawn-markup/blob/master/spec/fixtures/logo.png?raw=true"></p><p>world</p>')
+    processor.parse('<p>hello</p><p><img src="https://github.com/puzzle/prawn-markup/blob/main/spec/fixtures/logo.png?raw=true"></p><p>world</p>')
 
     expect(text.strings).to eq(['hello', 'world'])
     expect(left_positions).to eq([left, left])

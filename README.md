@@ -37,12 +37,12 @@ doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>')
 
 This gem parses the given HTML and layouts the following elements in a vertical order:
 
-* Text blocks: `p`, `div`, `ol`, `ul`, `li`, `hr`, `br`
-* Text semantics: `a`, `b`, `strong`, `i`, `em`, `u`, `s`, `del`, `sub`, `sup`, `color`
-* Headings: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-* Tables: `table`, `tr`, `td`, `th`
-* Media: `img`, `iframe`
-* Inputs: `type=checkbox`, `type=radio`
+- Text blocks: `p`, `div`, `ol`, `ul`, `li`, `hr`, `br`
+- Text semantics: `a`, `b`, `strong`, `i`, `em`, `u`, `s`, `del`, `sub`, `sup`, `color`
+- Headings: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
+- Tables: `table`, `tr`, `td`, `th`
+- Media: `img`, `iframe`
+- Inputs: `type=checkbox`, `type=radio`
 
 All other elements are ignored, their content is added to the parent element. With a few exceptions, no CSS is processed. One exception is the `width` property of `img`, `td` and `th`, which may contain values in `cm`, `mm`, `px`, `pt`, `%` or `auto`. Another exception is the `rgb` or `cmyk` properties of the Prawn-specific `color` tag.
 
@@ -75,40 +75,40 @@ Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/pra
 
 Beside these options handled by Prawn / prawn-table, the following values may be customized:
 
-* `:text`
-  * `:preprocessor`: A proc/callable that is called each time before a chunk of text is rendered.
-  * `:margin_bottom`: Margin after each `<p>`, `<ol>`, `<ul>` or `<table>`. Defaults to about half a line.
-* `:heading1-6`
-  * `:margin_top`: Margin before a heading. Default is 0.
-  * `:margin_bottom`: Margin after a heading. Default is 0.
-* `:table`
-  * `:placeholder`
-    * `:too_large`: If the table content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[table content too large]'.
-    * `:subtable_too_large`: If the content of a subtable cannot be fitted into the table, this text is rendered instead. Defaults to '[nested tables with automatic width are not supported]'.
-* `:list`
-  * `:vertical_margin`: Margin at the top and the bottom of a list. Default is 5.
-  * `:bullet`
-    * `:char`: The text used as bullet in unordered lists. Default is '•'.
-    * `:margin`: Margin before the bullet. Default is 10.
-  * `:content`
-    * `:margin`: Margin between the bullet and the content. Default is 10.
-  * `:placeholder`
-    * `:too_large`: If the list content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[list content too large]'.
-* `:image`
-  * `:loader`: A callable that accepts the `src` attribute as an argument an returns a value understood by Prawn's `image` method. Loads `http(s)` URLs and base64 encoded data URIs by default.
-  * `:placeholder`: If an image is not supported, this text/callable is rendered instead. Defaults to '[unsupported image]'.
-* `:iframe`
-  * `:placeholder`: If the HTML contains IFrames, this text/callable is rendered instead.
-  A callable gets the URL of the IFrame as an argument. Defaults to ignore iframes.
-* `:input`
-  * `:symbol_font`: A special font to print checkboxes and radios. Prawn's standard fonts do not support special unicode characters. Do not forget to update the document's `font_families`.
-  * `:symbol_font_size`: The size of the special font to print checkboxes and radios.
-  * `:checkbox`
-    * `:checked`: The char to print for a checked checkbox. Default is '☑'.
-    * `:unchecked`: The char to print for an unchecked checkbox. Default is '☐'.
-  * `:radio`
-    * `:checked`: The char to print for a checked radio. Default is '◉'.
-    * `:unchecked`: The char to print for an unchecked radio. Default is '○'.
+- `:text`
+  - `:preprocessor`: A proc/callable that is called each time before a chunk of text is rendered.
+  - `:margin_bottom`: Margin after each `<p>`, `<ol>`, `<ul>` or `<table>`. Defaults to about half a line.
+- `:heading1-6`
+  - `:margin_top`: Margin before a heading. Default is 0.
+  - `:margin_bottom`: Margin after a heading. Default is 0.
+- `:table`
+  - `:placeholder`
+    - `:too_large`: If the table content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[table content too large]'.
+    - `:subtable_too_large`: If the content of a subtable cannot be fitted into the table, this text is rendered instead. Defaults to '[nested tables with automatic width are not supported]'.
+- `:list`
+  - `:vertical_margin`: Margin at the top and the bottom of a list. Default is 5.
+  - `:bullet`
+    - `:char`: The text used as bullet in unordered lists. Default is '•'.
+    - `:margin`: Margin before the bullet. Default is 10.
+  - `:content`
+    - `:margin`: Margin between the bullet and the content. Default is 10.
+  - `:placeholder`
+    - `:too_large`: If the list content does not fit into the current bounding box, this text/callable is rendered instead. Defaults to '[list content too large]'.
+- `:image`
+  - `:loader`: A callable that accepts the `src` attribute as an argument an returns a value understood by Prawn's `image` method. Loads `http(s)` URLs and base64 encoded data URIs by default.
+  - `:placeholder`: If an image is not supported, this text/callable is rendered instead. Defaults to '[unsupported image]'.
+- `:iframe`
+  - `:placeholder`: If the HTML contains IFrames, this text/callable is rendered instead.
+    A callable gets the URL of the IFrame as an argument. Defaults to ignore iframes.
+- `:input`
+  - `:symbol_font`: A special font to print checkboxes and radios. Prawn's standard fonts do not support special unicode characters. Do not forget to update the document's `font_families`.
+  - `:symbol_font_size`: The size of the special font to print checkboxes and radios.
+  - `:checkbox`
+    - `:checked`: The char to print for a checked checkbox. Default is '☑'.
+    - `:unchecked`: The char to print for an unchecked checkbox. Default is '☐'.
+  - `:radio`
+    - `:checked`: The char to print for a checked radio. Default is '◉'.
+    - `:unchecked`: The char to print for an unchecked radio. Default is '○'.
 
 ## Development
 
@@ -128,4 +128,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Prawn::Markup project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/puzzle/prawn-markup/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Prawn::Markup project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/puzzle/prawn-markup/blob/main/CODE_OF_CONDUCT.md).
