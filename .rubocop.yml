@@ -3,7 +3,7 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   Exclude:
-    - '*.gemspec'
+    - "*.gemspec"
     - spec/**/*
     - vendor/**/*
 
@@ -71,4 +71,8 @@ Style/OptionalBooleanParameter:
 
 # Backwards compatibility
 Style/SafeNavigation:
+  Enabled: false
+
+# Backwards compatibility
+Style/SlicingWithRange:
   Enabled: false
