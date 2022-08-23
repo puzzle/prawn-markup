@@ -34,10 +34,12 @@ module Prawn
           hash.dup.tap do |image_hash|
             image_hash.delete(:width)
             image_hash[:image_width] = SizeConverter.new(max_width).parse(hash[:width])
-            if max_width
-              natural_width, _height = natural_image_dimensions(image_hash)
-              image_hash[:fit] = [max_width, 999_999] if max_width < natural_width
+            natural_width, _height = natural_image_dimensions(image_hash)
+            if max_width && (max_width < natural_width)
+              image_hash[:fit] = [max_width, 999_999]
             end
+          rescue Prawn::Errors::UnsupportedImageType
+            image_hash.clear
           end
         end
 

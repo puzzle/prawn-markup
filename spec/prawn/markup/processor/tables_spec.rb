@@ -207,6 +207,28 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     expect(images.size).to eq(1)
   end
 
+  it 'skips not existing image in table' do
+    processor.parse(
+      '<table><tr><th>Col One</th><th>Col Two</th></tr><tr><td>' \
+      "<img src=\"https://example.org/not_existing.png\">" \
+      '</td><td>two</td></tr></table>'
+    )
+
+    expect(text.strings).to eq(['Col One', 'Col Two', 'two'])
+    expect(images.size).to eq(0)
+  end
+
+  it 'skips unsupported image in table' do
+    processor.parse(
+      '<table><tr><th>Col One</th><th>Col Two</th></tr><tr><td>' \
+      "<img src=\"https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif\">" \
+      '</td><td>two</td></tr></table>'
+    )
+
+    expect(text.strings).to eq(['Col One', 'Col Two', 'two'])
+    expect(images.size).to eq(0)
+  end
+
   it 'uses equal widths for large contents if none are given' do
     processor.parse('<table><tr><td>Col One</td><td>Col Two</td></tr>' \
       '<tr><td>hello world has very much text hello world has very much text' \
