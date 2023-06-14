@@ -88,6 +88,7 @@ RSpec.describe Prawn::Markup::Processor::Lists do
   end
 
   # See https://bugzilla.gnome.org/show_bug.cgi?id=759987
+  # Fixed with newer version
   it 'creates a large nested list with direct children sublists (invalid html)' do
     processor.parse(
       '<p>hello</p><ul><li>first</li><li>second</li>' \
@@ -98,18 +99,21 @@ RSpec.describe Prawn::Markup::Processor::Lists do
     )
 
     ol_desc_left = left + bullet_margin + ordinal_width + content_margin
+    sub_ordinal_left = desc_left + bullet_margin + bullet_padding
+    sub_desc_left = desc_left + bullet_margin + ordinal_width + content_margin
     expect(left_positions)
       .to eq([left,
               bullet_left, desc_left,
               bullet_left, desc_left,
-              bullet_left, ol_desc_left,
-              bullet_left, ol_desc_left, ol_desc_left,
-              bullet_left, ol_desc_left,
-              left,
+              sub_ordinal_left, sub_desc_left,
+              sub_ordinal_left, sub_desc_left, sub_desc_left,
+              sub_ordinal_left, sub_desc_left,
+              bullet_left, desc_left, desc_left,
               left].map(&:round))
 
     ltop = list_top - p_gap
-    second_ltop = ltop - 2 * line - 2 * list_vertical_margin - leading - p_gap
+    second_ltop = ltop - 2 * line
+    third_ltop = second_ltop - 4 * line
     expect(top_positions)
       .to eq([top,
               ltop, ltop,
@@ -118,8 +122,9 @@ RSpec.describe Prawn::Markup::Processor::Lists do
               second_ltop - line, second_ltop - line,
               second_ltop - 2 * line,
               second_ltop - 3 * line, second_ltop - 3 * line,
-              second_ltop - 4 * line - list_vertical_margin - leading - p_gap,
-              second_ltop - 5 * line - list_vertical_margin - leading - p_gap,
+              third_ltop, third_ltop,
+              third_ltop - line,
+              third_ltop - 2 * line - list_vertical_margin - leading - p_gap,
             ].map(&:round))
   end
 
