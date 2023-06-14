@@ -2,6 +2,6 @@
 
 module Prawn
   module Markup
-    VERSION = '0.3.7'
+    VERSION = '1.0.0'
   end
 end
