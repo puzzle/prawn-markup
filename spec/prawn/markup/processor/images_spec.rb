@@ -72,10 +72,24 @@ RSpec.describe Prawn::Markup::Processor::Images do
   end
 
   context 'with custom loader' do
-    let(:options) { { image: { loader: ->(src) { "spec/fixtures/#{src}" } } } }
+    let(:loader) do
+      ->(src) do
+        match = src.match(/^fix:(.*?)$/)
+        "spec/fixtures/#{match[1]}" if match
+      end
+    end
+
+    let(:options) { { image: { loader: loader } } }
 
     it 'render image with custom loader' do
-      processor.parse('<p>hello</p><img src="logo.png"><p>world</p>')
+      processor.parse('<p>hello</p><img src="fix:logo.png"><p>world</p>')
+
+      expect(left_positions).to eq([left, left])
+      expect(top_positions).to eq([top, top - line - LOGO_DIMENSION.last - p_gap - 5].map(&:round))
+    end
+
+    it 'falls back to default if loader returns nil' do
+      processor.parse("<p>hello</p><img src=\"#{encode_image('logo.png')}\"><p>world</p>")
 
       expect(left_positions).to eq([left, left])
       expect(top_positions).to eq([top, top - line - LOGO_DIMENSION.last - p_gap - 5].map(&:round))

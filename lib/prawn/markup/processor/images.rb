@@ -57,10 +57,14 @@ module Prawn
       end
 
       def load_image(src)
+        custom_load_image(src) ||
+          decode_base64_image(src) ||
+          load_remote_image(src)
+      end
+
+      def custom_load_image(src)
         if options[:image] && options[:image][:loader]
           options[:image][:loader].call(src)
-        else
-          decode_base64_image(src) || load_remote_image(src)
         end
       end
 
