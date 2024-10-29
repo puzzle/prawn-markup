@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    branches:
+      - main # create pull request to run actions on other branches
   pull_request:
 
 jobs:
@@ -38,6 +40,7 @@ jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.head.repo.fork }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
@@ -45,7 +48,7 @@ jobs:
         with:
           ruby-version: 3.2
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - uses: paambaati/codeclimate-action@v5.0.0
+      - uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
