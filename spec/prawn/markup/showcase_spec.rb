@@ -20,7 +20,7 @@ RSpec.describe 'Showcase' do
         placeholder: ->(src) { "Embedded content: #{src}" }
       },
       input: { symbol_font: 'DejaVu', symbol_font_size: 16 },
-      link: { color: { rgb: "0000FF" }, underline: true }
+      link: { color: "AA0000", underline: true }
     }
     doc.markup(html)
     # lookatit
