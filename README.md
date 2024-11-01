@@ -110,8 +110,8 @@ Beside these options handled by Prawn / prawn-table, the following values may be
     - `:checked`: The char to print for a checked radio. Default is '◉'.
     - `:unchecked`: The char to print for an unchecked radio. Default is '○'.
 - `:link`
-  - `:color`: The link color, which can be specified in either RGB or CMYK format.
-  - `:underline`: Specifies whether the link should be underlined. Default is false..
+  - `:color`: The link color, which can be specified in either RGB hex format or 4-value CMYK.
+  - `:underline`: Specifies whether the link should be underlined. Default is false.
 
 ## Development
 

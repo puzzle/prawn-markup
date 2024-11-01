@@ -28,7 +28,7 @@ RSpec.describe Prawn::Markup::Processor::Text do
   it 'handles prawn color tag for cmyk' do
     processor.parse('hello <color c="22" m="55" y="79" k="30">world</color>')
     expect(text.strings).to eq(['hello ', 'world'])
-  end  
+  end
 
   it 'handles prawn font name' do
     processor.parse('hello <font name="Courier">world</font>')
@@ -48,5 +48,22 @@ RSpec.describe Prawn::Markup::Processor::Text do
   it 'handles prawn font multiple attributes' do
     processor.parse('hello <font name="Courier" size="20">world</font>')
     expect(text.strings).to eq(['hello ', 'world'])
+  end
+
+  context 'with_options' do
+    let(:options) do
+      {
+        link: {
+          color: "AAAAAA",
+          underline: true,
+        }
+      }
+    end
+
+    it 'creates links with provided options' do
+      processor.parse('hello <a href="http://example.com">world</a>')
+      expect(text.strings).to eq(['hello ', 'world'])
+      expect(top_positions).to eq([top, top].map(&:round))
+    end
   end
 end

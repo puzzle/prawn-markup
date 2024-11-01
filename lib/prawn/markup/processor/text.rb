@@ -11,15 +11,15 @@ module Prawn
       end
 
       def start_a
-        start_u                           if link_options[:underline]
-        start_color(link_options[:color]) if link_options[:color].any?
+        start_u                                if link_options[:underline]
+        append_color_tag(link_options[:color]) if link_options[:color]
         append_text("<link href=\"#{current_attrs['href']}\">")
       end
       alias start_link start_a
 
       def end_a
         append_text('</link>')
-        end_color if link_options[:color].any?
+        end_color if link_options[:color]
         end_u     if link_options[:underline]
       end
       alias end_link end_a
@@ -30,7 +30,7 @@ module Prawn
 
       def default_link_options
         {
-          color: {},
+          color: nil,
           underline: false
         }
       end
@@ -93,14 +93,13 @@ module Prawn
         append_text('</sup>')
       end
 
-      def start_color(options = {})
-        options = current_attrs unless options.any?
-        rgb, c, m, y, k = options.transform_keys(&:to_s).values_at('rgb', 'c', 'm', 'y', 'k')
+      def start_color
+        rgb, c, m, y, k = current_attrs.values_at('rgb', 'c', 'm', 'y', 'k')
 
         if [c, m, y, k].all?
-          append_text("<color c=\"#{c}\" m=\"#{m}\" y=\"#{y}\" k=\"#{k}\">")
+          append_color_tag([c, m, y, k])
         else
-          append_text("<color rgb=\"#{rgb}\">")
+          append_color_tag(rgb)
         end
       end
 
@@ -118,6 +117,15 @@ module Prawn
 
       def end_font
         append_text('</font>')
+      end
+
+      def append_color_tag(color)
+        if color.is_a?(Array)
+          c, m, y, k = color
+          append_text("<color c=\"#{c}\" m=\"#{m}\" y=\"#{y}\" k=\"#{k}\">")
+        else
+          append_text("<color rgb=\"#{color}\">")
+        end
       end
     end
   end
