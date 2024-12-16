@@ -49,7 +49,9 @@ module Prawn
 
         reset
         html = Prawn::Markup::Normalizer.new(html).normalize
-        Nokogiri::HTML::SAX::Parser.new(self).parse(html) { |ctx| ctx.recovery = true }
+        Nokogiri::HTML::SAX::Parser.new(self, html.encoding&.to_s).parse(html) do |ctx|
+          ctx.recovery = true
+        end
       end
 
       def start_element(name, attrs = [])
