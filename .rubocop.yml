@@ -2,6 +2,7 @@ AllCops:
   DisplayCopNames: true
   NewCops: enable
   SuggestExtensions: false
+  TargetRubyVersion: 3.1
   Exclude:
     - "*.gemspec"
     - spec/**/*
