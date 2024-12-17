@@ -27,7 +27,7 @@ module Prawn
         end
 
         def text_options
-          (options[:text] || {})
+          options[:text] || {}
         end
 
         def compute_image_width(hash, max_width)

@@ -133,7 +133,7 @@ module Prawn
           if width.nil? && total_width
             width = total_width - column_width_sum - ((columns_without_width - 1) * MIN_COL_WIDTH)
           end
-          super(node, width, style_options)
+          super
         end
 
         def compute_column_widths
