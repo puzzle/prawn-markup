@@ -86,6 +86,11 @@ module Prawn
       def add_cell_text_node(cell, options = {})
         return unless buffered_text?
 
+        options[:font_style] ||= options.delete(:style) if options.key?(:style)
+        # only allow on supported options of prawn-table; See https://github.com/prawnpdf/prawn-table/blob/master/manual/table/cell_text.rb
+        options.slice!(*%i[font font_style inline_format kerning leading min_font_size
+                           overflow rotate rotate_around single_line size text_color valign])
+        
         cell.nodes << options.merge(content: dump_text.strip)
       end
 
