@@ -77,6 +77,14 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               first_row_top - 4 * line].map(&:round))
   end
 
+  it 'creates headings inside tables' do
+    processor.parse('<table><tr><td><h1>hello</h1><h2>world</h2></td>></tr></table>')
+    expect(text.strings).to eq(['hello', 'world'])
+    first_sub_col_left = first_col_left + table_padding
+    expect(left_positions).to eq([first_col_left, first_col_left)
+    expect(top_positions).to eq([first_row_top, first_row_top - line].map(&:round))
+  end
+
   it 'creates divs inside tables' do
     processor.parse('<table><tr><td>boot<div>hello<div>world</div><div>and universe</div></div>all the rest</td>' \
                     '<td><div>other</div></td></tr></table>')
