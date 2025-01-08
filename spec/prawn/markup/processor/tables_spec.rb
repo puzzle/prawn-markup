@@ -65,7 +65,6 @@ RSpec.describe Prawn::Markup::Processor::Tables do
     processor.parse('<table><tr><td>boot<p>hello</p><p>world</p>and universe</td>' \
                     '<td><p>other</p><p><br/></p><p>last</p></td></tr></table>')
     expect(text.strings).to eq(['boot', 'hello', 'world', 'and universe', 'other', 'last'])
-    first_sub_col_left = first_col_left + table_padding
     expect(left_positions)
       .to eq([first_col_left, first_col_left, first_col_left, first_col_left, 342, 342])
     expect(top_positions)
@@ -77,19 +76,26 @@ RSpec.describe Prawn::Markup::Processor::Tables do
               first_row_top - 4 * line].map(&:round))
   end
 
-  it 'creates headings inside tables' do
-    processor.parse('<table><tr><td><h1>hello</h1><h2>world</h2></td>></tr></table>')
-    expect(text.strings).to eq(['hello', 'world'])
-    first_sub_col_left = first_col_left + table_padding
-    expect(left_positions).to eq([first_col_left, first_col_left)
-    expect(top_positions).to eq([first_row_top, first_row_top - line].map(&:round))
+  describe 'nested headings' do
+    let(:options) do
+      {
+        heading1: { size: 36, style: :bold },
+        heading2: { size: 24, style: :bold_italic }
+      }
+    end
+
+    it 'creates headings inside tables' do
+      processor.parse('<table><tr><td><h1>hello</h1><h2>world</h2></td></tr></table>')
+      expect(text.strings).to eq(['hello', 'world'])
+      expect(left_positions).to eq([first_col_left, first_col_left])
+      expect(top_positions).to eq([first_row_top - 17, first_row_top - 50].map(&:round))
+    end
   end
 
   it 'creates divs inside tables' do
     processor.parse('<table><tr><td>boot<div>hello<div>world</div><div>and universe</div></div>all the rest</td>' \
                     '<td><div>other</div></td></tr></table>')
     expect(text.strings).to eq(['boot', 'hello', 'world', 'and universe', 'all the rest', 'other'])
-    first_sub_col_left = first_col_left + table_padding
     expect(left_positions)
       .to eq([first_col_left, first_col_left, first_col_left, first_col_left, first_col_left, 368])
     expect(top_positions)

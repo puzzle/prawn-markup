@@ -87,9 +87,9 @@ module Prawn
         return unless buffered_text?
 
         # only allow on supported options of prawn-table; See https://github.com/prawnpdf/prawn-table/blob/master/manual/table/cell_text.rb
-        options = options.slice(*%i[font font_style inline_format kerning leading min_font_size
-                                    overflow rotate rotate_around single_line size text_color valign])
-        
+        options = options.slice(*%i[font font_style inline_format kerning leading min_font_size size
+                                    overflow rotate rotate_around single_line text_color valign])
+
         cell.nodes << options.merge(content: dump_text.strip)
       end
 
