@@ -84,7 +84,8 @@ RSpec.describe Prawn::Markup::Processor::Blocks do
           leading: leading,
           size: font_size,
           margin_bottom: 0,
-          preprocessor: ->(text) { text.upcase }
+          preprocessor: ->(text) { text.upcase },
+          treat_empty_paragraph_as_new_line: true
         }
       }
     end
@@ -107,5 +108,10 @@ RSpec.describe Prawn::Markup::Processor::Blocks do
       expect(top_positions).to eq([top, top - line].map(&:round))
     end
 
+    it "treats empty paragraphs as new line if configured" do
+      processor.parse("<p>hello</p><p></p><p>world</p>")
+      expect(text.strings).to eq(%w[HELLO WORLD])
+      expect(top_positions).to eq([top, top - 2 * line].map(&:round))
+    end
   end
 end
