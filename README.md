@@ -69,7 +69,7 @@ doc.markup('<p>Hello World</p><hr/><p>KTHXBYE</p>', text: { align: :center })
 
 Options may be set for `text`, `heading[1-6]`, `table` (subkeys `cell` and `header`) and `list` (subkeys `content` and `bullet`).
 
-Text and heading options include all keys from Prawns [#text](http://prawnpdf.org/api-docs/2.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`.
+Text and heading options include all keys from Prawns [#text](https://prawnpdf.org/docs/prawn/2.5.0/Prawn/Text.html#text-instance_method) method: `font`, `size`, `color`, `style`, `align`, `valign`, `leading`,`direction`, `character_spacing`, `indent_paragraphs`, `kerning`, `mode`.
 
 Tables and lists are rendered with [prawn-table](https://github.com/prawnpdf/prawn-table) and have the following additional options: `padding`, `borders`, `border_width`, `border_color`, `background_color`, `border_lines`, `rotate`, `overflow`, `min_font_size`. Options from `text` may be overridden.
 
