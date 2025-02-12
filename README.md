@@ -78,6 +78,7 @@ Beside these options handled by Prawn / prawn-table, the following values may be
 - `:text`
   - `:preprocessor`: A proc/callable that is called each time before a chunk of text is rendered.
   - `:margin_bottom`: Margin after each `<p>`, `<ol>`, `<ul>` or `<table>`. Defaults to about half a line.
+  - `:treat_empty_paragraph_as_new_line`: Boolean flag to set a new line if paragraph is empty.
 - `:heading1-6`
   - `:margin_top`: Margin before a heading. Default is 0.
   - `:margin_bottom`: Margin after a heading. Default is 0.
