@@ -1,8 +1,6 @@
 # Prawn::Markup
 
 [![Build Status](https://github.com/puzzle/prawn-markup/actions/workflows/build.yml/badge.svg)](https://github.com/puzzle/prawn-markup/actions/workflows/build.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/maintainability)](https://codeclimate.com/github/puzzle/prawn-markup/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/52a462f9d65e33352d4e/test_coverage)](https://codeclimate.com/github/puzzle/prawn-markup/test_coverage)
 
 Adds simple HTML snippets into [Prawn](http://prawnpdf.org)-generated PDFs. All elements are layouted vertically using Prawn's formatting options. A major use case for this gem is to include WYSIWYG-generated HTML parts into server-generated PDF documents.
 

@@ -36,22 +36,3 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Run rubocop
         run: bundle exec rubocop
-
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
-    if: ${{ !github.event.pull_request.head.repo.fork }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 4.0
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: bundle exec rake
-          coverageLocations: |
-            ${{github.workspace}}/spec/coverage/coverage.json:simplecov

@@ -50,7 +50,7 @@ module Prawn
 
         def extract_text_cell_style(hash)
           TEXT_STYLE_OPTIONS
-            .each_with_object({}) { |key, h| h[key] = hash[key] }
+            .to_h { |key| [key, hash[key]] }
             .tap { |options| convert_style_options(options) }
         end
 
