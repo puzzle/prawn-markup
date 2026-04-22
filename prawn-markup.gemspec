@@ -23,12 +23,14 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'base64'
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'prawn'
   spec.add_dependency 'prawn-table'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'byebug'
+  spec.add_development_dependency 'logger'
   spec.add_development_dependency 'matrix'
   spec.add_development_dependency 'pdf-inspector'
   spec.add_development_dependency 'rake'
