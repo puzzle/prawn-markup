@@ -26,7 +26,7 @@ GEM
     lint_roller (1.1.0)
     logger (1.7.0)
     matrix (0.4.3)
-    nokogiri (1.19.3-x86_64-linux-gnu)
+    nokogiri (1.19.4-x86_64-linux-gnu)
       racc (~> 1.4)
     parallel (1.28.0)
     parser (3.3.11.1)
